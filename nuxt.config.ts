@@ -1,7 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: {
-    enabled: false,
+    enabled: false
+  },
+
+  typescript: {
+    shim: false
   },
 
   app: {
@@ -9,12 +13,13 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/api/**': { cors: true }
+    '/': { prerender: true },
+    '/api/*': { cors: true }
   },
 
   experimental: {
     appManifest: false
   },
 
-  modules: ['@pinia/nuxt', "@vueuse/nuxt"]
+  modules: ['@pinia/nuxt', "@vueuse/nuxt", "@vueform/nuxt", "@nuxt/content"]
 })
