@@ -6,7 +6,7 @@ export const useGamesStore = defineStore('games', () => {
   const worstScore = computed(() => findMax(scores.value))
   const bestScore = computed(() => findMin(scores.value))
 
-  function setGame(newGame: IGame) {
+  function setGame(newGame: IGame | null) {
     return game.value = newGame
   }
 
@@ -14,7 +14,7 @@ export const useGamesStore = defineStore('games', () => {
     return games.value = newGames
   }
 
-  async function fetchGames() {
+  async function getAllGames() {
     return $fetch('/api/games').then(setGames)
   }
 
@@ -22,8 +22,12 @@ export const useGamesStore = defineStore('games', () => {
     return $fetch(`/api/games/${id}`).then(setGame)
   }
 
+  async function createGame(body: IGame) {
+    return $fetch('/api/games/new', { method: 'POST', body }).then(setGame)
+  }
+
   function $reset() {
-    game.value = null
+    setGame(null)
   }
 
   if (import.meta.hot) {
@@ -36,8 +40,9 @@ export const useGamesStore = defineStore('games', () => {
     gamesCount,
     worstScore,
     bestScore,
-    fetchGames,
+    getAllGames,
     getGame,
+    createGame,
     $reset
   }
 })
