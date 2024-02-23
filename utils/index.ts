@@ -3,12 +3,12 @@ export const isNumberedArray = (arr: any[]): arr is number[] =>
 
 export const findNumber = <T>(fn: (...x: number[]) => number, arr: T[], key?: keyof T): number => {
   if (arr.length == 0)
-    throw createError('Array is empty')
+    throw new Error('Array is empty')
 
   const flatArray = typeof key === 'undefined' ? arr : arr.map(elem => elem[key])
 
   if (!isNumberedArray(flatArray))
-    throw createError('Array must be numbered')
+    throw new Error('Array must be numbered')
 
   return fn(...flatArray)
 }
