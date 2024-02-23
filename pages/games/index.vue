@@ -2,16 +2,7 @@
 const GamesStore = useGamesStore()
 const { games, gamesCount, worstScore, bestScore } = storeToRefs(GamesStore)
 
-const { pending, error } = useAsyncData(
-  'games',
-  () => GamesStore.fetchGames(),
-  {
-    server: false,
-    getCachedData(key) {
-      return useNuxtData(key).data.value
-    }
-  }
-)
+const { pending, error } = useAsyncData(() => GamesStore.getAllGames())
 </script>
 
 <template>
@@ -20,6 +11,7 @@ const { pending, error } = useAsyncData(
     <p v-if="pending">Loading...</p>
     <p v-else-if="error">Request failed with an error {{ error.message }}</p>
     <div v-else>
+      <NuxtLink to="/games/new">Create new game</NuxtLink>
       <header>
         <span>All: {{ gamesCount }}</span>
         <span>Worst: {{ worstScore }}</span>
@@ -40,7 +32,7 @@ const { pending, error } = useAsyncData(
           <tbody>
             <tr v-for="game in games" :key="game.id">
               <td>
-                <button @click="$router.push('/games/' + game.id)">
+                <button @click="navigateTo('/games/' + game.id)">
                   detail {{ game.id }}
                 </button>
               </td>

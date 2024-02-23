@@ -4,16 +4,7 @@ const GamesStore = useGamesStore()
 const { game } = storeToRefs(GamesStore)
 const gameId = Number(route.params.id)
 
-const { pending, error } = useAsyncData(
-  `game:${gameId}`,
-  () => GamesStore.getGame(gameId),
-  {
-    server: false,
-    getCachedData(key) {
-      return game.value = useNuxtData(key).data.value
-    }
-  }
-)
+const { pending, error } = useAsyncData(() => GamesStore.getGame(gameId))
 
 onUnmounted(() => GamesStore.$reset())
 </script>
