@@ -1,0 +1,11 @@
+{
+  "scores": {
+    "gates": "Number of open Gates on the game board",
+    "monsters": "Number of Monsters on the game board",
+    "cursed": "Total number of \"Cursed\" or \"Dark Pact\" Conditions",
+    "rumors": "Number of Rumor Mythos card in play",
+    "clues": "Total number of Clue tokens investigators have",
+    "blessed": "Total number of \"Blessed\" Conditions investigators have",
+    "doom": "Current level of Doom"
+  }
+}
