@@ -34,18 +34,17 @@ declare interface IGameResult {
   solvedMysteries: number
   time: number
   comment?: string
-  scoring?: IScore[]
+  scoring?: IGameScore
   reason?: string
 }
 
 declare interface IGameScore {
-  title: string
-  score: number
+  [title: string]: number
 }
 
 declare interface IGameWinningResult extends IGameResult {
   winner: true
-  scoring: IScore[]
+  scoring: IGameScore
 }
 
 declare interface IGameLosingResult extends IGameResult {

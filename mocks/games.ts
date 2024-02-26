@@ -15,7 +15,7 @@ export const games: IGame[] = [{
   result: {
     winner: false,
     solvedMysteries: 1,
-    time: 4*60*60*1000,
+    time: 4 * 60 * 60 * 1000,
     reason: 'No reason'
   }
 }, {
@@ -35,13 +35,10 @@ export const games: IGame[] = [{
   result: {
     winner: true,
     solvedMysteries: 3,
-    time: 3*60*60*1000,
-    scoring: [{
-      title: 'Mystery 1',
-      score: 10
-    }, {
-      title: 'Mystery 2',
-      score: 20
-    }]
+    time: 3 * 60 * 60 * 1000,
+    scoring: {
+      gates: 10,
+      doom: 0
+    }
   }
 }]

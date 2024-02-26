@@ -10,8 +10,8 @@ const preludeNames = computed(() => ['None', ...preludes.value.map(prelude => pr
 const { isLoading, start, finish } = useLoadingIndicator()
 
 function formatTime(v: number): string {
-  const h = v / 4 >> 0
-  const m = (v / 4 % 1) * 60
+  const h = v / 1000 / 60 / 60 >> 0
+  const m = v / 1000 / 60 - h * 60
 
   return `${h}h ${m}m`
 }
@@ -42,12 +42,14 @@ async function handleSubmit(form$: Vueform) {
         <!-- Players -->
         <SelectElement name="players" label="Number of players" :default="4" :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
         <!-- Additional Rules -->
-        <StaticElement name="additional" content="Additional Rules" tag="h3" />
-        <!-- Prelude -->
-        <SelectElement name="prelude" label="Prelude" :default="preludeNames[0]" :items="preludeNames" view="blocks" />
-        <!-- Mythos -->
-        <CheckboxgroupElement name="mythos" label="Mythos" :default="['easy', 'normal', 'hard']"
-          :items="['easy', 'normal', 'hard']" view="blocks" />
+        <ObjectElement name="rules">
+          <StaticElement name="additional" content="Additional Rules" tag="h3" />
+          <!-- Prelude -->
+          <SelectElement name="prelude" label="Prelude" :default="preludeNames[0]" :items="preludeNames" view="blocks" />
+          <!-- Mythos -->
+          <CheckboxgroupElement name="mythos" label="Mythos" :default="['easy', 'normal', 'hard']"
+            :items="['easy', 'normal', 'hard']" view="blocks" />
+        </ObjectElement>
         <!-- Result -->
         <StaticElement name="result_title" content="Result" tag="h3" />
         <ObjectElement name="result">
@@ -58,8 +60,8 @@ async function handleSubmit(form$: Vueform) {
           <RadiogroupElement name="solvedMysteries" label="Number of solved mysteries" :default="1" :items="[0, 1, 2, 3]"
             view="tabs" />
           <!-- Time -->
-          <SliderElement name="time" label="Time" :default="16" type="number" :min="0" :max="100" show-tooltip="always"
-            :format="formatTime" />
+          <SliderElement name="time" label="Time" :default="16 * 15 * 60 * 1000" type="number" :min="0"
+            :max="100 * 15 * 60 * 1000" :step="15 * 60 * 1000" show-tooltip="always" :format="formatTime" />
           <!-- Comments -->
           <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." />
           <!-- Reason for defeat -->
@@ -68,10 +70,10 @@ async function handleSubmit(form$: Vueform) {
           <!-- Scoring -->
           <ObjectElement name="scoring" :conditions="[['result.winner', true]]">
             <StaticElement name="scoring_title" content="Scoring" tag="h4" />
-            <ObjectElement name="scores">
-              <TextElement v-for="(title, label) in scoreTitles" :key="label" :name="label" :label="title"
-                rules="required|min:0" :default="0" type="number" input-type="number" />
-            </ObjectElement>
+            <!-- TODO: Add rules required|integer|min:0
+              when issue was closed https://github.com/vueform/vueform/issues/149 -->
+            <TextElement v-for="(title, label) in scoreTitles" :key="label" :name="label" :label="title" :default="0"
+              type="number" input-type="number" />
           </ObjectElement>
         </ObjectElement>
         <!-- Submit button -->
