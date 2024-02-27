@@ -1,9 +1,9 @@
 declare interface IGame {
   id: string
   date: string
-  ancient: string
+  ancient: AncientName
   players: number
-  expansions: string[]
+  expansions: ExpansionName[]
   investigators: string[]
   rules: IGameRules
   result: IGameWinningResult | IGameLosingResult
@@ -18,8 +18,8 @@ declare interface IGameLosing extends IGame {
 }
 
 declare interface IGameRules {
-  prelude?: string | boolean
-  startingRumors?: string | boolean
+  prelude?: PreludeName
+  startingRumors: boolean
   mythos: IGameMythos
 }
 
@@ -34,20 +34,16 @@ declare interface IGameResult {
   solvedMysteries: number
   time: number
   comment?: string
-  scoring?: IGameScore
-  reason?: string
-}
-
-declare interface IGameScore {
-  [title: string]: number
+  scoring?: IScores
+  reason?: ReasonName
 }
 
 declare interface IGameWinningResult extends IGameResult {
   winner: true
-  scoring: IGameScore
+  scoring: IScores
 }
 
 declare interface IGameLosingResult extends IGameResult {
   winner: false
-  reason: string
+  reason: ReasonName
 }

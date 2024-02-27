@@ -1,9 +1,7 @@
-import { games } from '../../../../mocks/games'
-
 export default defineEventHandler(async event => {
-  const id = getRouterParam(event, 'id') as string
+  const id = getRouterParam(event, 'id')
 
-  const game = games.find(g => g.id === id)
+  const game = MOCK_GAMES.find(g => g.id === id)
 
   if (!game) {
     throw createError({
