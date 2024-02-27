@@ -1,8 +1,11 @@
 <script setup lang="ts">
 const GamesStore = useGamesStore()
 const { games, gamesCount, worstScore, bestScore } = storeToRefs(GamesStore)
-
 const { pending, error } = useAsyncData(() => GamesStore.getAllGames())
+
+useSeoMeta({
+  title: 'My games'
+})
 </script>
 
 <template>

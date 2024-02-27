@@ -18,8 +18,8 @@ export const useGamesStore = defineStore('games', () => {
     return $fetch('/api/games').then(setGames)
   }
 
-  async function getGame(id: number) {
-    return $fetch(`/api/games/${id}`).then(setGame)
+  async function getGame(id: string) {
+    return $fetch<IGame>(`/api/games/${id}`).then(setGame)
   }
 
   async function createGame(body: IGame) {

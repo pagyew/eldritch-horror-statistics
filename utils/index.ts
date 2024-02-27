@@ -1,7 +1,8 @@
-export const isNumberedArray = (arr: any[]): arr is number[] =>
-  Array.isArray(arr) && arr.every(item => typeof item === 'number')
+export function isNumberedArray(arr: any[]): arr is number[] {
+  return Array.isArray(arr) && arr.every(item => typeof item === 'number')
+}
 
-export const findNumber = <T>(fn: (...x: number[]) => number, arr: T[], key?: keyof T): number => {
+export function findNumber<T>(fn: (...x: number[]) => number, arr: T[], key?: keyof T): number {
   if (arr.length == 0)
     throw new Error('Array is empty')
 
@@ -13,8 +14,14 @@ export const findNumber = <T>(fn: (...x: number[]) => number, arr: T[], key?: ke
   return fn(...flatArray)
 }
 
-export const findMax = <T>(arr: T[], key?: keyof T): number =>
-  findNumber(Math.max, arr, key)
+export function findMax<T>(arr: T[], key?: keyof T): number {
+  return findNumber(Math.max, arr, key)
+}
 
-export const findMin = <T>(arr: T[], key?: keyof T): number =>
-  findNumber(Math.max, arr, key)
+export function findMin<T>(arr: T[], key?: keyof T): number {
+  return findNumber(Math.max, arr, key)
+}
+
+export function getNames<T extends Record<"name", any>>(arr: T[]): T["name"][] {
+  return arr.map(elem => elem.name)
+}

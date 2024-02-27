@@ -1,12 +1,9 @@
 <script lang="ts" setup>
 import type { Vueform } from '@vueform/vueform'
 
-const ContentStore = useContentStore()
-const GamesStore = useGamesStore()
-const { ancients, scoreTitles, reasonsForDefeat, preludes } = storeToRefs(ContentStore)
-const { pending, error } = useAsyncData(() => ContentStore.getResultContent())
-const ancientNames = computed(() => ancients.value.map(ancient => ancient.name))
-const preludeNames = computed(() => ['None', ...preludes.value.map(prelude => prelude.name)])
+const ancientNames = Object.values(ANCIENT)
+const preludeNames = ['None', ...Object.values(PRELUDE)]
+const reasonNames = Object.values(REASON)
 const { isLoading, start, finish } = useLoadingIndicator()
 
 function formatTime(v: number): string {
@@ -23,12 +20,14 @@ async function handleSubmit(form$: Vueform) {
   console.log({ requestData })
   finish()
 }
+
+useSeoMeta({
+  title: 'Create a new game'
+})
 </script>
 
 <template>
-  <p v-if="pending">Loading...</p>
-  <p v-else-if="error">Error: {{ error }}</p>
-  <div v-else class="container">
+  <div class="container">
     <ClientOnly>
       <p v-if="isLoading">Creating...</p>
       <Vueform v-else class="form" size="sm" :endpoint="false" @submit="handleSubmit">
@@ -65,14 +64,14 @@ async function handleSubmit(form$: Vueform) {
           <!-- Comments -->
           <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." />
           <!-- Reason for defeat -->
-          <RadiogroupElement name="reason" label="Reason for defeat" :default="reasonsForDefeat[0]"
-            :items="reasonsForDefeat" :conditions="[['result.winner', false]]" view="blocks" />
+          <RadiogroupElement name="reason" label="Reason for defeat" :default="reasonNames[0]" :items="reasonNames"
+            :conditions="[['result.winner', false]]" view="blocks" />
           <!-- Scoring -->
           <ObjectElement name="scoring" :conditions="[['result.winner', true]]">
             <StaticElement name="scoring_title" content="Scoring" tag="h4" />
             <!-- TODO: Add rules required|integer|min:0
               when issue was closed https://github.com/vueform/vueform/issues/149 -->
-            <TextElement v-for="(title, label) in scoreTitles" :key="label" :name="label" :label="title" :default="0"
+            <TextElement v-for="(title, label) in SCORE" :key="label" :name="label" :label="title" :default="0"
               type="number" input-type="number" />
           </ObjectElement>
         </ObjectElement>
