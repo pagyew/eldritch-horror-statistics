@@ -13,8 +13,9 @@ onUnmounted(() => GamesStore.$reset())
 
 <template>
   <h2>Game: {{ gameId }}</h2>
+  <NuxtLink to="/games">Back to My Games</NuxtLink>
   <p v-if="pending">Loading...</p>
-  <p v-else-if="error">Error: {{ error.message }}</p>
+  <pre v-else-if="error">{{ error }}</pre>
   <p v-else-if="!game">Game with id {{ gameId }} not found</p>
   <pre v-else>{{ JSON.stringify(game, null, 2) }}</pre>
 </template>
