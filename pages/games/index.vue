@@ -33,10 +33,10 @@ useSeoMeta({
             </tr>
           </thead>
           <tbody>
-            <tr v-for="game in games" :key="game.id">
+            <tr v-for="(game, index) in games" :key="game.id">
               <td>
                 <button @click="navigateTo('/games/' + game.id)">
-                  detail {{ game.id }}
+                  detail {{ index }}
                 </button>
               </td>
               <td>{{ game.date }}</td>
@@ -56,7 +56,7 @@ useSeoMeta({
 section {
   padding: 10px;
   border: 1px solid #111;
-  width: 30%;
+  width: min(500px, 100% - 22px)
 }
 
 header {
