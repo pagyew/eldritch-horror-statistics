@@ -17,6 +17,10 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@vueform/nuxt": "^1.4.0"
+    "@vueform/nuxt": "^1.4.0",
+    "@vueuse/nuxt": "^10.9.0"
+  },
+  "overrides": {
+    "vue": "latest"
   }
 }
