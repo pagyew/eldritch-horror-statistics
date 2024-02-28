@@ -1,23 +1,21 @@
 <script lang="ts" setup>
 import type { Vueform } from '@vueform/vueform'
 
+const id = crypto.randomUUID()
 const ancientNames = Object.values(ANCIENT)
 const preludeNames = ['None', ...Object.values(PRELUDE)]
 const reasonNames = Object.values(REASON)
 const { isLoading, start, finish } = useLoadingIndicator()
 
-function formatTime(v: number): string {
-  const h = v / 1000 / 60 / 60 >> 0
-  const m = v / 1000 / 60 - h * 60
-
-  return `${h}h ${m}m`
-}
-
 // TODO: EHS-1
 async function handleSubmit(form$: Vueform) {
   start()
-  const requestData = form$.requestData
-  console.log({ requestData })
+
+  const GamesStore = useGamesStore()
+
+  GamesStore.createGame({ id, ...form$.requestData } as IGame)
+  navigateTo('/games/' + id)
+
   finish()
 }
 
@@ -59,8 +57,8 @@ useSeoMeta({
           <RadiogroupElement name="solvedMysteries" label="Number of solved mysteries" :default="1" :items="[0, 1, 2, 3]"
             view="tabs" />
           <!-- Time -->
-          <SliderElement name="time" label="Time" :default="16 * 15 * 60 * 1000" type="number" :min="0"
-            :max="100 * 15 * 60 * 1000" :step="15 * 60 * 1000" show-tooltip="always" :format="formatTime" />
+          <SliderElement name="time" label="Time" :default="toMs({ h: 4 })" type="number" :min="0" :max="toMs({ h: 24 })"
+            :step="toMs({ m: 15 })" show-tooltip="always" :format="formatTime" />
           <!-- Comments -->
           <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." />
           <!-- Reason for defeat -->
@@ -71,8 +69,8 @@ useSeoMeta({
             <StaticElement name="scoring_title" content="Scoring" tag="h4" />
             <!-- TODO: Add rules required|integer|min:0
               when issue was closed https://github.com/vueform/vueform/issues/149 -->
-            <TextElement v-for="(title, label) in SCORE" :key="label" :name="label" :label="title" :default="0"
-              type="number" input-type="number" />
+            <TextElement v-for="(title, label) in SCORE" :key="label" :name="label.toLowerCase()" :label="title"
+              :default="0" type="number" input-type="number" />
           </ObjectElement>
         </ObjectElement>
         <!-- Submit button -->
