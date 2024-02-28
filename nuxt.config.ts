@@ -14,12 +14,16 @@ export default defineNuxtConfig({
   experimental: { appManifest: false },
 
   imports: {
-    dirs: ['constants']
+    dirs: ['constants'],
+    presets: [{
+      from: 'pinia',
+      imports: ['skipHydrate']
+    }]
   },
 
   nitro: {
     imports: {
-      dirs: ['constants', 'server/mocks']
+      dirs: ['constants', 'server/mocks', 'stores']
     }
   },
 
