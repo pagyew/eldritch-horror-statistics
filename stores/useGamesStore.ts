@@ -1,6 +1,6 @@
 export const useGamesStore = defineStore('games', () => {
   const game = ref<IGame | null>(null)
-  const games = ref<IGame[]>([])
+  const games = useLocalStorage<IGame[]>('games', [])
   const scores = computed(() => games.value.filter(isWinner).map(calculateScore))
   const gamesCount = computed(() => games.value.length)
   const worstScore = computed(() => findMax(scores.value))
@@ -15,15 +15,26 @@ export const useGamesStore = defineStore('games', () => {
   }
 
   async function getAllGames() {
-    return $fetch('/api/games').then(setGames)
+    return games.value
+    // return $fetch('/api/games').then(setGames)
   }
 
   async function getGame(id: string) {
-    return $fetch<IGame>(`/api/games/${id}`).then(setGame)
+    const game = games.value.find(g => g.id === id)
+
+    if (!game) {
+      throw Error(`Game with id '${id}' not found`)
+    }
+
+    return setGame(game)
+    // return $fetch<IGame>(`/api/games/${id}`).then(setGame)
   }
 
   async function createGame(body: IGame) {
-    return $fetch('/api/games/new', { method: 'POST', body }).then(setGame)
+    const newGames = [...games.value, body]
+
+    return setGames(newGames)
+    // return $fetch('/api/games/new', { method: 'POST', body }).then(setGame)
   }
 
   function $reset() {
@@ -36,7 +47,7 @@ export const useGamesStore = defineStore('games', () => {
 
   return {
     game,
-    games,
+    games: skipHydrate(games),
     gamesCount,
     worstScore,
     bestScore,
