@@ -1,20 +1,23 @@
 <script setup lang="ts">
 const GamesStore = useGamesStore()
-const { games, gamesCount, worstScore, bestScore } = storeToRefs(GamesStore)
-const { pending, error } = useAsyncData(() => GamesStore.getAllGames())
-
-useSeoMeta({
-  title: 'My games'
-})
+const { gamesCount, worstScore, bestScore } = storeToRefs(GamesStore)
+const {
+  data: games,
+  pending,
+  error
+} = useLazyAsyncData(() => GamesStore.getAll(), { server: false })
 </script>
 
 <template>
+  <Head>
+    <Title>My games</Title>
+  </Head>
   <section>
     <h2>My games</h2>
+    <NuxtLink to="/games/new">Create new game</NuxtLink>
     <p v-if="pending">Loading...</p>
     <p v-else-if="error">Request failed with an error {{ error.message }}</p>
-    <div v-else>
-      <NuxtLink to="/games/new">Create new game</NuxtLink>
+    <main>
       <header>
         <span>All: {{ gamesCount }}</span>
         <span>Worst: {{ worstScore }}</span>
@@ -48,7 +51,7 @@ useSeoMeta({
           </tbody>
         </table>
       </div>
-    </div>
+    </main>
   </section>
 </template>
 

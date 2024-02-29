@@ -6,39 +6,39 @@ export const useGamesStore = defineStore('games', () => {
   const worstScore = computed(() => findMax(scores.value))
   const bestScore = computed(() => findMin(scores.value))
 
-  function setGame(newGame: IGame | null) {
+  function setCurrent(newGame: IGame | null) {
     return game.value = newGame
   }
 
-  function setGames(newGames: IGame[]) {
+  function setAll(newGames: IGame[]) {
     return games.value = newGames
   }
 
-  async function getAllGames() {
+  async function getAll() {
     return games.value
     // return $fetch('/api/games').then(setGames)
   }
 
-  async function getGame(id: string) {
+  async function getById(id: string) {
     const game = games.value.find(g => g.id === id)
 
     if (!game) {
       throw Error(`Game with id '${id}' not found`)
     }
 
-    return setGame(game)
+    return setCurrent(game)
     // return $fetch<IGame>(`/api/games/${id}`).then(setGame)
   }
 
-  async function createGame(body: IGame) {
-    const newGames = [...games.value, body]
+  async function create(game: IGame) {
+    const newGames = [...games.value, game]
 
-    return setGames(newGames)
+    return setAll(newGames)
     // return $fetch('/api/games/new', { method: 'POST', body }).then(setGame)
   }
 
   function $reset() {
-    setGame(null)
+    setCurrent(null)
   }
 
   if (import.meta.hot) {
@@ -51,9 +51,9 @@ export const useGamesStore = defineStore('games', () => {
     gamesCount,
     worstScore,
     bestScore,
-    getAllGames,
-    getGame,
-    createGame,
+    getById,
+    getAll,
+    create,
     $reset
   }
 })

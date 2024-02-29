@@ -1,17 +1,19 @@
 <script setup lang="ts">
 const GamesStore = useGamesStore()
-const { game } = storeToRefs(GamesStore)
 const gameId = useRoute().params.id as string
-const { pending, error } = useAsyncData(() => GamesStore.getGame(gameId))
-
-useSeoMeta({
-  title: `Game #${gameId}`
-})
+const {
+  data: game,
+  pending,
+  error
+} = useLazyAsyncData(() => GamesStore.getById(gameId), { server: false })
 
 onUnmounted(() => GamesStore.$reset())
 </script>
 
 <template>
+  <Head>
+    <Title>Game - {{ game?.ancient }}</Title>
+  </Head>
   <h2>Game: {{ gameId }}</h2>
   <NuxtLink to="/games">Back to My Games</NuxtLink>
   <p v-if="pending">Loading...</p>

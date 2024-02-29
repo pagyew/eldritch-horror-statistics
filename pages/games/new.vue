@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const GamesStore = useGamesStore()
 const id = crypto.randomUUID()
 const ancientNames = Object.values(ANCIENT)
 const preludeNames = ['None', ...Object.values(PRELUDE)]
@@ -8,20 +9,17 @@ const { isLoading, start, finish } = useLoadingIndicator()
 async function handleSubmit(form$: Vueform) {
   start()
 
-  const GamesStore = useGamesStore()
-
-  GamesStore.createGame({ id, ...form$.requestData } as IGame)
+  GamesStore.create({ id, ...form$.requestData } as IGame)
   navigateTo('/games/' + id)
 
   finish()
 }
-
-useSeoMeta({
-  title: 'Create a new game'
-})
 </script>
 
 <template>
+  <Head>
+    <Title>Create a new game</Title>
+  </Head>
   <div class="container">
     <ClientOnly>
       <p v-if="isLoading">Creating...</p>
@@ -67,7 +65,7 @@ useSeoMeta({
             <!-- TODO: Add rules required|integer|min:0
               when issue was closed https://github.com/vueform/vueform/issues/149 -->
             <TextElement v-for="(title, label) in SCORE" :key="label" :name="label.toLowerCase()" :label="title"
-              :default="0" type="number" input-type="number" />
+              :default="0" input-type="number" :format-data="(n: string, v: any) => ({ [n]: +v })" />
           </ObjectElement>
         </ObjectElement>
         <!-- Submit button -->
