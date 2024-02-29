@@ -1,11 +1,11 @@
 <script setup lang="ts">
 const GamesStore = useGamesStore()
 const { gamesCount, worstScore, bestScore } = storeToRefs(GamesStore)
-const {
-  data: games,
-  pending,
-  error
-} = useLazyAsyncData(() => GamesStore.getAll(), { server: false })
+const { data: games, pending, error } = useAsyncData(() => GamesStore.getAll(), { server: false })
+
+function detail(id: string) {
+  navigateTo(`/games/${id}`)
+}
 </script>
 
 <template>
@@ -38,9 +38,7 @@ const {
           <tbody>
             <tr v-for="(game, index) in games" :key="game.id">
               <td>
-                <button @click="navigateTo('/games/' + game.id)">
-                  detail {{ index }}
-                </button>
+                <button @click="detail(game.id)">detail {{ index }}</button>
               </td>
               <td>{{ game.date }}</td>
               <td>{{ game.ancient }}</td>

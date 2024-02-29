@@ -6,11 +6,11 @@ const preludeNames = ['None', ...Object.values(PRELUDE)]
 const reasonNames = Object.values(REASON)
 const { isLoading, start, finish } = useLoadingIndicator()
 
-async function handleSubmit(form$: Vueform) {
+function submit(form$: Vueform) {
   start()
 
   GamesStore.create({ id, ...form$.requestData } as IGame)
-  navigateTo('/games/' + id)
+  navigateTo(`/games/${id}`)
 
   finish()
 }
@@ -20,10 +20,11 @@ async function handleSubmit(form$: Vueform) {
   <Head>
     <Title>Create a new game</Title>
   </Head>
+  <NuxtLink to="/games">Back to My Games</NuxtLink>
   <div class="container">
     <ClientOnly>
       <p v-if="isLoading">Creating...</p>
-      <Vueform v-else class="form" size="sm" :endpoint="false" @submit="handleSubmit">
+      <Vueform v-else class="form" size="sm" :endpoint="false" @submit="submit">
         <StaticElement name="head" tag="h2" content="Create new game" />
         <StaticElement name="divider" tag="hr" />
         <StaticElement name="general_title" tag="h3" content="General" />
