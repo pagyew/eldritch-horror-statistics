@@ -37,6 +37,13 @@ export const useGamesStore = defineStore('games', () => {
     // return $fetch('/api/games/new', { method: 'POST', body }).then(setGame)
   }
 
+  async function update(game: IGame) {
+    const newGames = games.value.map(g => (g.id === game.id ? game : g))
+
+    return setAll(newGames)
+    // return $fetch(`/api/games/${id}`, { method: 'PUT', body }).then(setGame)
+  }
+
   function $reset() {
     setCurrent(null)
   }
@@ -54,6 +61,7 @@ export const useGamesStore = defineStore('games', () => {
     getById,
     getAll,
     create,
+    update,
     $reset
   }
 })
