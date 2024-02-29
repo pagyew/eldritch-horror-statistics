@@ -17,7 +17,7 @@ const {
     <NuxtLink to="/games/new">Create new game</NuxtLink>
     <p v-if="pending">Loading...</p>
     <p v-else-if="error">Request failed with an error {{ error.message }}</p>
-    <main>
+    <main v-else>
       <header>
         <span>All: {{ gamesCount }}</span>
         <span>Worst: {{ worstScore }}</span>
