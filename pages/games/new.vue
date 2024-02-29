@@ -1,13 +1,10 @@
 <script lang="ts" setup>
-import type { Vueform } from '@vueform/vueform'
-
 const id = crypto.randomUUID()
 const ancientNames = Object.values(ANCIENT)
 const preludeNames = ['None', ...Object.values(PRELUDE)]
 const reasonNames = Object.values(REASON)
 const { isLoading, start, finish } = useLoadingIndicator()
 
-// TODO: EHS-1
 async function handleSubmit(form$: Vueform) {
   start()
 

@@ -18,7 +18,11 @@ export default defineNuxtConfig({
     presets: [{
       from: 'pinia',
       imports: ['skipHydrate']
-    }]
+    }, {
+      from: '@vueform/vueform',
+      imports: ['Vueform'],
+      type: true,
+    }],
   },
 
   nitro: {
