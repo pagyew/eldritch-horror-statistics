@@ -26,7 +26,7 @@ export function findMax<T>(arr: T[], key?: keyof T): number {
 }
 
 export function findMin<T>(arr: T[], key?: keyof T): number {
-  return findNumber(Math.max, arr, key)
+  return findNumber(Math.min, arr, key)
 }
 
 export function getNames<T extends Record<"name", any>>(arr: T[]): T["name"][] {
