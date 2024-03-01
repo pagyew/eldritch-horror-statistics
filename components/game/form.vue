@@ -1,0 +1,129 @@
+<script setup lang="ts">
+const ancientNames = Object.values(ANCIENT)
+const preludeNames = [{ value: null, label: 'None' }, ...Object.values(PRELUDE)]
+const reasonNames = Object.values(REASON)
+const mythos: Array<keyof IGameMythos> = ['easy', 'normal', 'hard']
+
+const emits = defineEmits(['submit', 'cancel'])
+const { editing, game } = defineProps({
+  editing: {
+    type: Boolean,
+    default: false
+  },
+  game: {
+    type: Object as PropType<IGame>,
+    default: () => ({
+      expansions: [],
+      investigators: [],
+      date: new Date(),
+      ancient: 'Azathoth',
+      players: 4,
+      rules: {
+        startingRumor: false,
+        mythos: {
+          easy: true,
+          normal: true,
+          hard: true
+        },
+      },
+      result: {
+        winner: false,
+        solvedMysteries: 1,
+        time: toMs({ h: 4 }),
+        reason: 'Surrender'
+      }
+    })
+  }
+})
+
+const title = computed(() => editing ? 'Edit game' : 'Create new game')
+const action = computed(() => editing ? 'Save' : 'Create game')
+
+function submit(form$: Vueform) {
+  emits('submit', form$.requestData)
+}
+
+function cancel() {
+  emits('cancel')
+}
+</script>
+
+<template>
+  <div class="container">
+    <ClientOnly>
+      <Vueform class="form" size="sm" :endpoint="false" @submit="submit">
+        <StaticElement name="head" tag="h2" :content="title" />
+        <StaticElement name="divider" tag="hr" />
+        <StaticElement name="general_title" tag="h3" content="General" />
+        <!-- Date -->
+        <DateElement name="date" label="Date" rules="required" :default="game.date" />
+        <!-- Ancient -->
+        <SelectElement name="ancient" label="Ancient One" :default="game.ancient" :items="ancientNames" />
+        <!-- Players -->
+        <SelectElement name="players" label="Number of players" :default="game.players"
+          :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
+        <!-- Additional Rules -->
+        <ObjectElement name="rules">
+          <StaticElement name="additional" content="Additional Rules" tag="h3" />
+          <!-- Prelude -->
+          <SelectElement name="prelude" label="Prelude" :default="game.rules.prelude" :items="preludeNames" />
+          <!-- Starting Rumor -->
+          <ToggleElement name="startingRumor" label="Starting rumor" :default="game.rules.startingRumor" />
+          <!-- Mythos -->
+          <ObjectElement name="mythos">
+            <StaticElement name="mythos_title" content="Mythos" tag="h4" />
+            <ToggleElement v-for="myth in mythos" :name="myth" :text="myth" :default="game.rules.mythos[myth]" />
+          </ObjectElement>
+        </ObjectElement>
+        <!-- Result -->
+        <StaticElement name="result_title" content="Result" tag="h3" />
+        <ObjectElement name="result">
+          <!-- Winner -->
+          <ToggleElement name="winner" text="Defeat" :default="game.result.winner" />
+          <!-- TODO: EHS-2 -->
+          <!-- Solved Mysteries -->
+          <RadiogroupElement name="solvedMysteries" label="Number of solved mysteries"
+            :default="game.result.solvedMysteries" :items="[0, 1, 2, 3]" view="tabs" />
+          <!-- Time -->
+          <SliderElement name="time" label="Time" :default="game.result.time" type="number" :min="0"
+            :max="toMs({ h: 24 })" :step="toMs({ m: 15 })" show-tooltip="always" :format="formatTime" />
+          <!-- Comments -->
+          <TextareaElement name="comment" label="Comment" placeholder="It was terrible..."
+            :default="game.result.comment" />
+          <!-- Reason for defeat -->
+          <RadiogroupElement name="reason" label="Reason for defeat" :default="game.result.reason" :items="reasonNames"
+            :conditions="[['result.winner', false]]" view="blocks" />
+          <!-- Scoring -->
+          <ObjectElement name="scoring" :conditions="[['result.winner', true]]">
+            <StaticElement name="scoring_title" content="Scoring" tag="h4" />
+            <!-- TODO: Add rules required|integer|min:0
+                when issue was closed https://github.com/vueform/vueform/issues/149 -->
+            <TextElement v-for="(title, label) in SCORE" :key="label" :name="lower(label)" :label="title"
+              :default="game.result.scoring?.[lower(label)]" input-type="number"
+              :format-data="(n: string, v: string) => ({ [n]: +v })" />
+          </ObjectElement>
+        </ObjectElement>
+        <StaticElement name="divider" tag="hr" />
+        <!-- Submit button -->
+        <GroupElement name="buttons">
+          <ButtonElement name="submit" :button-label="action" submits :columns="3" full />
+          <ButtonElement v-if="editing" name="cancel" button-label="Cancel" secondary @click="cancel" :columns="3" full />
+        </GroupElement>
+      </Vueform>
+    </ClientOnly>
+  </div>
+</template>
+
+<style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.form {
+  width: 50%;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+</style>
