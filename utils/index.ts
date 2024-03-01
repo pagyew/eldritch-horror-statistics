@@ -52,3 +52,11 @@ export function formatTime(ms: number): string {
 
   return `${h}h ${m}m`
 }
+
+export function lower<T extends string>(str: T) {
+  return str.toLowerCase() as Lowercase<T>
+}
+
+export function upper<T extends string>(str: T) {
+  return str.toUpperCase() as Uppercase<T>
+}
