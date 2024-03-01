@@ -6,7 +6,7 @@ export const MOCK_GAMES: IGame[] = [{
   expansions: [],
   investigators: [],
   rules: {
-    startingRumors: false,
+    startingRumor: false,
     mythos: {
       easy: true,
       normal: true,
@@ -27,7 +27,7 @@ export const MOCK_GAMES: IGame[] = [{
   expansions: [EXPANSION.STRANGE_REMNANTS],
   investigators: [],
   rules: {
-    startingRumors: true,
+    startingRumor: true,
     mythos: {
       easy: true,
       normal: true,

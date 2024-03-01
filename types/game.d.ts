@@ -19,7 +19,7 @@ declare interface IGameLosing extends IGame {
 
 declare interface IGameRules {
   prelude?: PreludeName
-  startingRumors: boolean
+  startingRumor: boolean
   mythos: IGameMythos
 }
 
