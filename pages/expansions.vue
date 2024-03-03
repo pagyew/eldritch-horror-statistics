@@ -1,5 +1,5 @@
 <template>
-  <div>
-    It's Expansions
-  </div>
+<div>
+  It's Expansions
+</div>
 </template>

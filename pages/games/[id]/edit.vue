@@ -19,16 +19,15 @@ function save(data: any) {
 </script>
 
 <template>
-  <Head>
-    <Title>Editing Game - {{ game?.ancient }}</Title>
-  </Head>
-  <h2>Game: {{ gameId }}</h2>
-  <p v-if="isLoading">Saving...</p>
-  <p v-if="pending">Loading...</p>
-  <pre v-else-if="error">{{ error }}</pre>
-  <p v-else-if="!game">Game with id {{ gameId }} not found</p>
-  <GameForm v-else @submit="save" @cancel="cancel" editing :game="game" />
+<Head>
+  <Title>Editing Game - {{ game?.ancient }}</Title>
+</Head>
+<h2>Game: {{ gameId }}</h2>
+<p v-if="isLoading">Saving...</p>
+<p v-if="pending">Loading...</p>
+<pre v-else-if="error">{{ error }}</pre>
+<p v-else-if="!game">Game with id {{ gameId }} not found</p>
+<GameForm v-else @submit="save" @cancel="cancel" editing :game="game" />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

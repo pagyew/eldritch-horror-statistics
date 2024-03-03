@@ -14,13 +14,12 @@ function submit(data: any) {
 </script>
 
 <template>
-  <Head>
-    <Title>Create a new game</Title>
-  </Head>
-  <NuxtLink to="/games">Back to My Games</NuxtLink>
-  <p v-if="isLoading">Creating...</p>
-  <GameForm @submit="submit" />
+<Head>
+  <Title>Create a new game</Title>
+</Head>
+<NuxtLink to="/games">Back to My Games</NuxtLink>
+<p v-if="isLoading">Creating...</p>
+<GameForm @submit="submit" />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

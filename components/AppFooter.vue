@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <footer>
-    It's footer
-  </footer>
+<footer>
+  It's footer
+</footer>
 </template>
 
 <style scoped>

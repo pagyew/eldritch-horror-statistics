@@ -2,10 +2,9 @@
 </script>
 
 <template>
-  <section>
-    <h2>Home page</h2>
-  </section>
+<section>
+  <h2>Home page</h2>
+</section>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

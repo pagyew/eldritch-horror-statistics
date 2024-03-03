@@ -1,5 +1,5 @@
 <template>
-  <div>
-    It's Statistics
-  </div>
+<div>
+  It's Statistics
+</div>
 </template>
