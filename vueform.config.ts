@@ -11,4 +11,5 @@ export default defineConfig({
   theme: vueform,
   locales: { en },
   locale: 'en',
+  classHelpers: true
 })
