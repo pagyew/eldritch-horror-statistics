@@ -1,5 +1,10 @@
 <script setup lang="ts">
 const ancientNames = Object.values(ANCIENT)
+const investigators = INVESTIGATORS.map(({ name, specialization }) => ({
+  value: name,
+  label: name,
+  description: specialization
+}))
 const preludeNames = [{ value: null, label: 'None' }, ...Object.values(PRELUDE)]
 const reasonNames = Object.values(REASON)
 const mythos: Array<keyof IGameMythos> = ['easy', 'normal', 'hard']
@@ -79,7 +84,21 @@ function cancel() {
           </ObjectElement>
         </ObjectElement>
       </GroupElement>
-      <GroupElement class="group" name="investigaters" :columns="6"></GroupElement>
+      <GroupElement class="group" name="investigaters" :columns="6">
+        <!-- Investigators -->
+        <StaticElement name="investigators_title" content="Investigators" tag="h3" />
+        <!-- TODO: Refactor this shit -->
+        <CheckboxgroupElement name="investigators" :default="game.investigators" :items="investigators" view="blocks"
+          :add-classes="{
+      CheckboxgroupCheckbox: {
+        container: 'vf-col-3'
+      }
+    }" :replace-class="{
+      wrapper: {
+        'vf-checkboxgroup-blocks-wrapper': 'vf-layout-inner-container'
+      }
+    }" />
+      </GroupElement>
       <GroupElement class="group" name="result" :columns="6">
         <!-- Result -->
         <StaticElement name="result_title" content="Result" tag="h3" />
