@@ -23,31 +23,18 @@ function detail(id: string) {
       <span>Worst: {{ worstScore }}</span>
       <span>Best: {{ bestScore }}</span>
     </header>
-    <div>
-      <table>
-        <thead align="left">
-          <tr>
-            <th>Detail</th>
-            <th>Date</th>
-            <th>Ancient</th>
-            <th>Players</th>
-            <th>Time</th>
-            <th>Winner</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(game, index) in games" :key="game.id">
-            <td>
-              <button @click="detail(game.id)">detail {{ index }}</button>
-            </td>
-            <td>{{ game.date }}</td>
-            <td>{{ game.ancient }}</td>
-            <td>{{ game.players }}</td>
-            <td>{{ new Date(game.result.time).toISOString().slice(11, 16) }}</td>
-            <td>{{ game.result.winner }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="games">
+      <div class="game" v-for="game in games" :key="game.id" @click="detail(game.id)">
+        <div class="info">
+          <div>{{ game.date }}</div>
+          <div>{{ game.ancient }}</div>
+          <div>{{ game.players }}</div>
+        </div>
+        <div class="result">
+          <span v-if="game.result.winner">{{ calculateScore(game as IGameWinning) }}</span>
+          <span>{{ game.result.winner }}</span>
+        </div>
+      </div>
     </div>
   </main>
 </section>
@@ -57,18 +44,45 @@ function detail(id: string) {
 section {
   padding: 10px;
   border: 1px solid #111;
-  width: min(500px, 100% - 22px)
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 header {
-  width: 100%;
+  width: 50%;
   display: flex;
   justify-content: space-between;
 }
 
-table {
-  border: 1px solid #222;
+.games {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.game {
+  display: flex;
+  justify-content: space-between;
   padding: 10px;
-  width: 100%;
+  border: 1px solid #111;
+  width: 300px;
+  height: 100px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.result {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 </style>
