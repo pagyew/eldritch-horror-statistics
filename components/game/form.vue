@@ -7,7 +7,7 @@ const investigators = INVESTIGATORS.map(({ name, specialization }) => ({
 }))
 const preludeNames = [{ value: null, label: 'None' }, ...Object.values(PRELUDE)]
 const reasonNames = Object.values(REASON)
-const mythos: Array<keyof IGameMythos> = ['easy', 'normal', 'hard']
+const mythos = ['easy', 'normal', 'hard']
 
 const emits = defineEmits(['submit', 'cancel'])
 const { editing, game } = defineProps({
@@ -25,11 +25,11 @@ const { editing, game } = defineProps({
       players: 4,
       rules: {
         startingRumor: false,
-        mythos: {
-          easy: true,
-          normal: true,
-          hard: true
-        },
+        mythos: [
+          'easy',
+          'normal',
+          'hard'
+        ],
       },
       result: {
         winner: false,
@@ -78,10 +78,8 @@ function cancel() {
           <!-- Starting Rumor -->
           <ToggleElement name="startingRumor" label="Starting rumor" :default="game.rules.startingRumor" />
           <!-- Mythos -->
-          <ObjectElement name="mythos">
-            <StaticElement name="mythos_title" content="Mythos" tag="h4" />
-            <ToggleElement v-for="myth in mythos" :name="myth" :text="myth" :default="game.rules.mythos[myth]" />
-          </ObjectElement>
+          <CheckboxgroupElement name="mythos" label="Mythos" :default="game.rules.mythos" :items="mythos"
+            view="blocks" />
         </ObjectElement>
       </GroupElement>
       <GroupElement class="group" name="investigaters" :columns="6">

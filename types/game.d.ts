@@ -20,14 +20,10 @@ declare interface IGameLosing extends IGame {
 declare interface IGameRules {
   prelude?: PreludeName
   startingRumor: boolean
-  mythos: IGameMythos
+  mythos: IGameMythos[]
 }
 
-declare interface IGameMythos {
-  easy: boolean
-  normal: boolean
-  hard: boolean
-}
+declare type IGameMythos = 'easy' | 'normal' | 'hard'
 
 declare interface IGameResult {
   winner: boolean
