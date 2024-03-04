@@ -54,21 +54,36 @@ function cancel() {
 </script>
 
 <template>
+<header>
+  <nav>
+    <ul>
+      <li>
+        <NuxtLink to="/games">Back to My Games</NuxtLink>
+      </li>
+      <li>
+        <NuxtLink :to="`/games/${game.id}`">Back to preview</NuxtLink>
+      </li>
+    </ul>
+  </nav>
+</header>
 <div class="container">
   <ClientOnly>
     <Vueform class="form" size="sm" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" :content="title" />
       <StaticElement name="divider" tag="hr" />
-      <GroupElement class="group" name="general" :columns="6">
+      <!-- TODO: Replace for GroupElement when issue was closed https://github.com/vueform/vueform/issues/156 -->
+      <!-- <GroupElement class="group" name="general" :columns="6"> -->
+      <div class="group vf-col-6">
         <StaticElement name="general_title" tag="h3" content="General" />
         <!-- Date -->
-        <DateElement name="date" label="Date" rules="required" :default="game.date" />
+        <DateElement name="date" label="Date" rules="required" :default="game.date" display-format="MMMM DD, YYYY" />
         <!-- Ancient -->
         <SelectElement name="ancient" label="Ancient One" :default="game.ancient" :items="ancientNames" />
         <!-- Players -->
         <SelectElement name="players" label="Number of players" :default="game.players"
           :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
-      </GroupElement>
+      </div>
+      <!-- </GroupElement> -->
       <GroupElement class="group" name="rules" :columns="6">
         <!-- Additional Rules -->
         <ObjectElement name="rules">
@@ -88,14 +103,14 @@ function cancel() {
         <!-- TODO: Refactor this shit -->
         <CheckboxgroupElement name="investigators" :default="game.investigators" :items="investigators" view="blocks"
           :add-classes="{
-      CheckboxgroupCheckbox: {
-        container: 'vf-col-3'
-      }
-    }" :replace-class="{
-      wrapper: {
-        'vf-checkboxgroup-blocks-wrapper': 'vf-layout-inner-container'
-      }
-    }" />
+          CheckboxgroupCheckbox: {
+            container: 'vf-col-3'
+          }
+        }" :replace-class="{
+          wrapper: {
+            'vf-checkboxgroup-blocks-wrapper': 'vf-layout-inner-container'
+          }
+        }" />
       </GroupElement>
       <GroupElement class="group" name="result" :columns="6">
         <!-- Result -->
