@@ -4,7 +4,7 @@ declare interface IGame {
   ancient: AncientName
   players: number
   expansions: ExpansionName[]
-  investigators: string[]
+  investigators: InvestigatorName[]
   rules: IGameRules
   result: IGameWinningResult | IGameLosingResult
 }
