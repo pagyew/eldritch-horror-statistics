@@ -35,7 +35,11 @@ const { editing, game } = defineProps({
         winner: false,
         solvedMysteries: 1,
         time: toMs({ h: 4 }),
-        reason: REASON.SURRENDER
+        reason: REASON.SURRENDER,
+        scoring: Object.fromEntries(
+          Object.entries(SCORE)
+            .map(([k]) => [lower(k), 0])
+        )
       }
     })
   }
@@ -71,9 +75,7 @@ function cancel() {
     <Vueform class="form" size="sm" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" :content="title" />
       <StaticElement name="divider" tag="hr" />
-      <!-- TODO: Replace for GroupElement when issue was closed https://github.com/vueform/vueform/issues/156 -->
-      <!-- <GroupElement class="group" name="general" :columns="6"> -->
-      <div class="group vf-col-6">
+      <GroupElement class="group" name="general" :columns="6">
         <StaticElement name="general_title" tag="h3" content="General" />
         <!-- Date -->
         <DateElement name="date" label="Date" rules="required" :default="game.date" display-format="MMMM DD, YYYY" />
@@ -82,8 +84,7 @@ function cancel() {
         <!-- Players -->
         <SelectElement name="players" label="Number of players" :default="game.players"
           :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
-      </div>
-      <!-- </GroupElement> -->
+      </GroupElement>
       <GroupElement class="group" name="rules" :columns="6">
         <!-- Additional Rules -->
         <ObjectElement name="rules">
@@ -137,8 +138,7 @@ function cancel() {
             <!-- TODO: Add rules required|integer|min:0
                   when issue was closed https://github.com/vueform/vueform/issues/149 -->
             <TextElement v-for="(title, label) in SCORE" :key="label" :name="lower(label)" :label="title"
-              :default="game.result.scoring?.[lower(label)]" input-type="number"
-              :format-data="(n: string, v: string) => ({ [n]: +v })" />
+              :default="game.result.scoring?.[lower(label)]" input-type="number" rules="required|integer|min:0" />
           </ObjectElement>
         </ObjectElement>
       </GroupElement>

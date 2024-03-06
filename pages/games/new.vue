@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 const GamesStore = useGamesStore()
-const id = crypto.randomUUID()
 const { isLoading, start, finish } = useLoadingIndicator()
 
 function submit(data: any) {
   start()
+
+  const id = crypto.randomUUID()
 
   GamesStore.create({ id, ...data } as IGame)
   navigateTo(`/games/${id}`)
