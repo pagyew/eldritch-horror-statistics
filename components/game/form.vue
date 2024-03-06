@@ -18,11 +18,11 @@ const { editing, game } = defineProps({
   game: {
     type: Object as PropType<IGame>,
     default: () => ({
-      expansions: [],
-      investigators: [],
       date: new Date(),
-      ancient: ANCIENT.AZATHOTH,
-      players: 4,
+      ancientName: ANCIENT.AZATHOTH,
+      expansionNames: [],
+      investigatorNames: [],
+      playerCount: 4,
       rules: {
         startingRumor: false,
         mythos: [
@@ -31,12 +31,12 @@ const { editing, game } = defineProps({
           'hard'
         ],
       },
-      result: {
-        winner: false,
-        solvedMysteries: 1,
+      isWin: false,
+      results: {
+        solvedMysteryCount: 1,
         time: toMs({ h: 4 }),
         reason: REASON.SURRENDER,
-        scoring: Object.fromEntries(
+        scores: Object.fromEntries(
           Object.entries(SCORE)
             .map(([k]) => [lower(k), 0])
         )
@@ -80,9 +80,9 @@ function cancel() {
         <!-- Date -->
         <DateElement name="date" label="Date" rules="required" :default="game.date" display-format="MMMM DD, YYYY" />
         <!-- Ancient -->
-        <SelectElement name="ancient" label="Ancient One" :default="game.ancient" :items="ancientNames" />
+        <SelectElement name="ancient" label="Ancient One" :default="game.ancientName" :items="ancientNames" />
         <!-- Players -->
-        <SelectElement name="players" label="Number of players" :default="game.players"
+        <SelectElement name="players" label="Number of players" :default="game.playerCount"
           :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
       </GroupElement>
       <GroupElement class="group" name="rules" :columns="6">
@@ -90,11 +90,11 @@ function cancel() {
         <ObjectElement name="rules">
           <StaticElement name="additional" content="Additional Rules" tag="h3" />
           <!-- Prelude -->
-          <SelectElement name="prelude" label="Prelude" :default="game.rules.prelude" :items="preludeNames" />
+          <SelectElement name="prelude" label="Prelude" :default="game.rules?.preludeName" :items="preludeNames" />
           <!-- Starting Rumor -->
-          <ToggleElement name="startingRumor" label="Starting rumor" :default="game.rules.startingRumor" />
+          <ToggleElement name="startingRumor" label="Starting rumor" :default="game.rules?.startingRumor" />
           <!-- Mythos -->
-          <CheckboxgroupElement name="mythos" label="Mythos" :default="game.rules.mythos" :items="mythos"
+          <CheckboxgroupElement name="mythos" label="Mythos" :default="game.rules?.mythos" :items="mythos"
             view="blocks" />
         </ObjectElement>
       </GroupElement>
@@ -102,8 +102,8 @@ function cancel() {
         <!-- Investigators -->
         <StaticElement name="investigators_title" content="Investigators" tag="h3" />
         <!-- TODO: Refactor this shit -->
-        <CheckboxgroupElement name="investigators" :default="game.investigators" :items="investigators" view="blocks"
-          :add-classes="{
+        <CheckboxgroupElement name="investigators" :default="game.investigatorNames" :items="investigators"
+          view="blocks" :add-classes="{
           CheckboxgroupCheckbox: {
             container: 'vf-col-3'
           }
@@ -113,32 +113,32 @@ function cancel() {
           }
         }" />
       </GroupElement>
-      <GroupElement class="group" name="result" :columns="6">
-        <!-- Result -->
-        <StaticElement name="result_title" content="Result" tag="h3" />
-        <ObjectElement name="result">
+      <GroupElement class="group" name="results" :columns="6">
+        <!-- Results -->
+        <StaticElement name="results_title" content="Result" tag="h3" />
+        <ObjectElement name="results">
           <!-- Winner -->
-          <ToggleElement name="winner" text="Defeat" :default="game.result.winner" />
+          <ToggleElement name="winner" text="Defeat" :default="game.isWin" />
           <!-- TODO: EHS-2 -->
           <!-- Solved Mysteries -->
           <RadiogroupElement name="solvedMysteries" label="Number of solved mysteries"
-            :default="game.result.solvedMysteries" :items="[0, 1, 2, 3]" view="tabs" />
+            :default="game.results?.solvedMysteryCount" :items="[0, 1, 2, 3]" view="tabs" />
           <!-- Time -->
-          <SliderElement name="time" label="Time" :default="game.result.time" type="number" :min="0"
+          <SliderElement name="time" label="Time" :default="game.results?.time" type="number" :min="0"
             :max="toMs({ h: 24 })" :step="toMs({ m: 15 })" show-tooltip="always" :format="formatTime" />
           <!-- Comments -->
           <TextareaElement name="comment" label="Comment" placeholder="It was terrible..."
-            :default="game.result.comment" />
+            :default="game.results?.comment" />
           <!-- Reason for defeat -->
-          <RadiogroupElement name="reason" label="Reason for defeat" :default="game.result.reason" :items="reasonNames"
-            :conditions="[['result.result.winner', false]]" view="blocks" />
+          <RadiogroupElement name="reason" label="Reason for defeat" :default="game.results?.reason"
+            :items="reasonNames" :conditions="[['results.results.winner', false]]" view="blocks" />
           <!-- Scoring -->
-          <ObjectElement name="scoring" :conditions="[['result.result.winner', true]]">
-            <StaticElement name="scoring_title" content="Scoring" tag="h4" />
+          <ObjectElement name="scores" :conditions="[['results.results.winner', true]]">
+            <StaticElement name="scores_title" content="Scoring" tag="h4" />
             <!-- TODO: Add rules required|integer|min:0
                   when issue was closed https://github.com/vueform/vueform/issues/149 -->
             <TextElement v-for="(title, label) in SCORE" :key="label" :name="lower(label)" :label="title"
-              :default="game.result.scoring?.[lower(label)]" input-type="number" rules="required|integer|min:0" />
+              :default="game.results?.scores?.[lower(label)]" input-type="number" rules="required|integer|min:0" />
           </ObjectElement>
         </ObjectElement>
       </GroupElement>

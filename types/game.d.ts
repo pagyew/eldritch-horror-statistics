@@ -1,45 +1,48 @@
-declare interface IGame {
+declare interface IGameNew {
   id: string
   date: string
-  ancient: AncientName
-  players: number
-  expansions: ExpansionName[]
-  investigators: InvestigatorName[]
-  rules: IGameRules
-  result: IGameWinningResult | IGameLosingResult
+  ancientName: AncientName
+  playerCount: number
+  isWin: boolean
 }
 
-declare interface IGameWinning extends IGame {
-  result: IGameWinningResult
+declare interface IGame extends IGameNew {
+  expansionNames?: ExpansionName[]
+  investigatorNames?: InvestigatorName[]
+  rules?: IGameRules
+  results?: IGameWinResults | IGameLoseResults
 }
 
-declare interface IGameLosing extends IGame {
-  result: IGameLosingResult
+declare interface IGameWin extends IGame {
+  isWin: true
+  results: IGameWinResults
+}
+
+declare interface IGameLose extends IGame {
+  isWin: false
+  results: IGameLoseResults
 }
 
 declare interface IGameRules {
-  prelude?: PreludeName
+  preludeName?: PreludeName
   startingRumor: boolean
   mythos: IGameMythos[]
 }
 
 declare type IGameMythos = 'easy' | 'normal' | 'hard'
 
-declare interface IGameResult {
-  winner: boolean
-  solvedMysteries: number
+declare interface IGameResults {
+  solvedMysteryCount: number
   time: number
   comment?: string
-  scoring?: IScores
+  scores?: IScores
   reason?: ReasonName
 }
 
-declare interface IGameWinningResult extends IGameResult {
-  winner: true
-  scoring: IScores
+declare interface IGameWinResults extends IGameResults {
+  scores: IScores
 }
 
-declare interface IGameLosingResult extends IGameResult {
-  winner: false
+declare interface IGameLoseResults extends IGameResults {
   reason: ReasonName
 }
