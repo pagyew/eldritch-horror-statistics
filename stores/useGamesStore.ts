@@ -30,7 +30,7 @@ export const useGamesStore = defineStore('games', () => {
     // return $fetch<IGame>(`/api/games/${id}`).then(setGame)
   }
 
-  async function create(game: IGame) {
+  async function create(game: IGameNew) {
     const newGames = [...games.value, game]
 
     return setAll(newGames)
