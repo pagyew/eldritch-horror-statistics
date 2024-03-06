@@ -60,3 +60,7 @@ export function lower<T extends string>(str: T) {
 export function upper<T extends string>(str: T) {
   return str.toUpperCase() as Uppercase<T>
 }
+
+export function arr(n: number, { start = 0, step = 1 }) {
+  return Array.from({ length: n }, (_, i) => start + i * step)
+}
