@@ -19,8 +19,5 @@
   "devDependencies": {
     "@vueform/nuxt": "^1.4.0",
     "@vueuse/nuxt": "^10.9.0"
-  },
-  "overrides": {
-    "vue": "latest"
   }
 }
