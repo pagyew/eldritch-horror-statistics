@@ -27,12 +27,12 @@ function detail(id: string) {
       <div class="game" v-for="game in games" :key="game.id" @click="detail(game.id)">
         <div class="info">
           <div>{{ game.date }}</div>
-          <div>{{ game.ancient }}</div>
-          <div>{{ game.players }}</div>
+          <div>{{ game.ancientName }}</div>
+          <div>{{ game.playerCount }}</div>
         </div>
         <div class="result">
-          <span v-if="game.result.winner">{{ calculateScore(game as IGameWinning) }}</span>
-          <span>{{ game.result.winner }}</span>
+          <span v-if="game.isWin">{{ calculateScore(game as IGameWin) }}</span>
+          <span>{{ game.isWin }}</span>
         </div>
       </div>
     </div>

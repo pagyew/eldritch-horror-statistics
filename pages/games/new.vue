@@ -2,15 +2,17 @@
 const GamesStore = useGamesStore()
 const { isLoading, start, finish } = useLoadingIndicator()
 
-function submit(data: any) {
+async function create(game: IGameNew) {
   start()
 
-  const id = crypto.randomUUID()
-
-  GamesStore.create({ id, ...data } as IGame)
-  navigateTo(`/games/${id}`)
+  await GamesStore.create(game)
+  navigateTo(`/games/${game.id}`)
 
   finish()
+}
+
+function cancel() {
+  navigateTo('/games')
 }
 </script>
 
@@ -20,7 +22,7 @@ function submit(data: any) {
 </Head>
 <NuxtLink to="/games">Back to My Games</NuxtLink>
 <p v-if="isLoading">Creating...</p>
-<GameForm @submit="submit" />
+<GameNew @submit="create" @cancel="cancel" />
 </template>
 
 <style scoped></style>

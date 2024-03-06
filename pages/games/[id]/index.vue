@@ -8,7 +8,7 @@ onUnmounted(() => GamesStore.$reset())
 
 <template>
 <Head>
-  <Title>Game - {{ game?.ancient }}</Title>
+  <Title>Game - {{ game?.ancientName }}</Title>
 </Head>
 <h2>Game: {{ gameId }}</h2>
 <header>
@@ -32,11 +32,11 @@ onUnmounted(() => GamesStore.$reset())
       <h3>General</h3>
       <div class="line">
         <span>Ancient</span>
-        <span>{{ game.ancient }}</span>
+        <span>{{ game.ancientName }}</span>
       </div>
       <div class="line">
         <span>Players</span>
-        <span>{{ game.players }}</span>
+        <span>{{ game.playerCount }}</span>
       </div>
       <div class="line">
         <span>Date</span>
@@ -47,34 +47,34 @@ onUnmounted(() => GamesStore.$reset())
       <h3>Rules</h3>
       <div class="line">
         <span>Mythos</span>
-        <span>{{ game.rules.mythos.join(', ') }}</span>
+        <span>{{ game.rules?.mythos.join(', ') }}</span>
       </div>
       <div class="line">
         <span>Rumor</span>
-        <span>{{ game.rules.startingRumor }}</span>
+        <span>{{ game.rules?.startingRumor }}</span>
       </div>
     </div>
     <div class="block investigators">
       <h3>Investigators</h3>
       <ul>
-        <li v-for="investigator in game.investigators" :key="investigator">
+        <li v-for="investigator in game.investigatorNames" :key="investigator">
           {{ investigator }}
         </li>
       </ul>
     </div>
-    <div class="block result">
-      <h3>Result</h3>
-      <p>{{ game.result.winner }}</p>
-      <p>{{ formatTime(game.result.time) }}</p>
-      <p>Solved mysteries: {{ game.result.solvedMysteries }}</p>
-      <div v-if="game.result.winner">
-        <div class="line" v-for="(score, name) in game.result.scoring" :key="name">
+    <div class="block results">
+      <h3>Results</h3>
+      <p>{{ game.isWin }}</p>
+      <p>{{ formatTime(game.results?.time ?? 0) }}</p>
+      <p>Solved mysteries: {{ game.results?.solvedMysteryCount }}</p>
+      <div v-if="game.isWin">
+        <div class="line" v-for="(score, name) in game.results?.scores" :key="name">
           <span>{{ SCORE[upper(name)] }}</span>
           <span>{{ score }}</span>
         </div>
       </div>
-      <div v-else>{{ game.result.reason }}</div>
-      <p v-if="game.result.comment">{{ game.result.comment }}</p>
+      <div v-else>{{ game.results?.reason }}</div>
+      <p v-if="game.results?.comment">{{ game.results?.comment }}</p>
     </div>
   </section>
 </main>
