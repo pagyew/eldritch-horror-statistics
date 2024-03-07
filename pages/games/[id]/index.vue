@@ -47,7 +47,7 @@ onUnmounted(() => GamesStore.$reset())
       <h3>Rules</h3>
       <div class="line">
         <span>Mythos</span>
-        <span>{{ game.rules?.mythos.join(', ') }}</span>
+        <span>{{ join(game.rules?.mythos) }}</span>
       </div>
       <div class="line">
         <span>Rumor</span>
