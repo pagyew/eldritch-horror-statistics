@@ -10,9 +10,10 @@ export default defineConfig({
   classHelpers: true,
   displayErrors: false,
   floatPlaceholders: false,
-  theme: vueform,
-  locales: { en },
+  forceNumbers: true,
   locale: 'en',
+  locales: { en },
+  size: 'sm',
   templates: { CheckboxgroupCheckbox_blocks },
-  forceNumbers: true
+  theme: vueform,
 })
