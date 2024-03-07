@@ -64,3 +64,12 @@ export function upper<T extends string>(str: T) {
 export function arr(n: number, { start = 0, step = 1 }) {
   return Array.from({ length: n }, (_, i) => start + i * step)
 }
+
+export function join(arr: any, separator: string = ', ') {
+  if (!Array.isArray(arr)) {
+    console.warn('Array is not an array')
+    return ''
+  }
+
+  return arr.join(separator)
+}

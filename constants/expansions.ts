@@ -1,6 +1,9 @@
 export const EXPANSIONS: IExpansion[] = [
   {
     name: EXPANSION.CITIES_IN_RUIN,
+    releaseYear: 2017,
+    logoUrl: '/images/expansions/logos/cities_in_ruin.svg',
+    posterUrl: '/images/expansions/posters/cities_in_ruin.jpg',
     ancinets: [
       ANCIENT.SHUDDE_M_ELL
     ],
@@ -18,6 +21,8 @@ export const EXPANSIONS: IExpansion[] = [
     ]
   }, {
     name: EXPANSION.CORE,
+    releaseYear: 2013,
+    posterUrl: '/images/expansions/posters/core.jpg',
     ancinets: [
       ANCIENT.AZATHOTH,
       ANCIENT.CTHULHU,
@@ -41,6 +46,9 @@ export const EXPANSIONS: IExpansion[] = [
     preludes: []
   }, {
     name: EXPANSION.FORSAKEN_LORE,
+    releaseYear: 2014,
+    logoUrl: '/images/expansions/logos/forsaken_lore.svg',
+    posterUrl: '/images/expansions/posters/forsaken_lore.jpg',
     ancinets: [
       ANCIENT.YIG
     ],
@@ -48,6 +56,9 @@ export const EXPANSIONS: IExpansion[] = [
     preludes: []
   }, {
     name: EXPANSION.MASKS_OF_NYARLATHOTEP,
+    releaseYear: 2018,
+    logoUrl: '/images/expansions/logos/masks_of_nyarlathotep.svg',
+    posterUrl: '/images/expansions/posters/masks_of_nyarlathotep.jpg',
     ancinets: [
       ANCIENT.ANTEDILUVIUM,
       ANCIENT.NYARLATHOTEP
@@ -75,6 +86,9 @@ export const EXPANSIONS: IExpansion[] = [
     ]
   }, {
     name: EXPANSION.MOUNTAINS_OF_MADNESS,
+    releaseYear: 2014,
+    logoUrl: '/images/expansions/logos/mountains_of_madness.svg',
+    posterUrl: '/images/expansions/posters/mountains_of_madness.jpg',
     ancinets: [
       ANCIENT.THE_ELDER_THINGS,
       ANCIENT.ITHAQUA
@@ -99,6 +113,9 @@ export const EXPANSIONS: IExpansion[] = [
     ]
   }, {
     name: EXPANSION.SIGNS_OF_CARCOSA,
+    releaseYear: 2016,
+    logoUrl: '/images/expansions/logos/signs_of_carcosa.svg',
+    posterUrl: '/images/expansions/posters/signs_of_carcosa.jpg',
     ancinets: [
       ANCIENT.HASTUR
     ],
@@ -116,6 +133,9 @@ export const EXPANSIONS: IExpansion[] = [
     ]
   }, {
     name: EXPANSION.STRANGE_REMNANTS,
+    releaseYear: 2015,
+    logoUrl: '/images/expansions/logos/strange_remnants.svg',
+    posterUrl: '/images/expansions/posters/strange_remnants.jpg',
     ancinets: [
       ANCIENT.SYZYGY
     ],
@@ -133,6 +153,9 @@ export const EXPANSIONS: IExpansion[] = [
     ]
   }, {
     name: EXPANSION.THE_DREAMLANDS,
+    releaseYear: 2017,
+    logoUrl: '/images/expansions/logos/the_dreamlands.svg',
+    posterUrl: '/images/expansions/posters/the_dreamlands.jpg',
     ancinets: [
       ANCIENT.ATLACH_NACHA,
       ANCIENT.HYPNOS
@@ -157,6 +180,9 @@ export const EXPANSIONS: IExpansion[] = [
     ]
   }, {
     name: EXPANSION.UNDER_THE_PYRAMIDS,
+    releaseYear: 2015,
+    logoUrl: '/images/expansions/logos/under_the_pyramids.svg',
+    posterUrl: '/images/expansions/posters/under_the_pyramids.jpg',
     ancinets: [
       ANCIENT.ABHOTH,
       ANCIENT.NEPHREN_KA

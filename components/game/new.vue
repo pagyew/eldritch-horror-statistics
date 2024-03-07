@@ -19,7 +19,7 @@ function cancel() {
 <template>
 <div class="container">
   <ClientOnly>
-    <Vueform class="form" size="sm" :endpoint="false" @submit="submit">
+    <Vueform class="form" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" content="Create a new game" />
       <!-- ID -->
       <HiddenElement name="id" :default="id" />
