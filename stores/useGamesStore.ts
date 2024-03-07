@@ -1,6 +1,6 @@
 export const useGamesStore = defineStore('games', () => {
   const game = ref<IGame | null>(null)
-  const games = useLocalStorage<IGame[]>('games', [])
+  const games = useEHSStorage<IGame[]>('games', [])
   const scores = computed(() => games.value.filter(isWinner).map(calculateScore))
   const gamesCount = computed(() => games.value.length)
   const worstScore = computed(() => findMax(scores.value))
