@@ -1,14 +1,18 @@
 <script lang="ts" setup>
+const SettingsStore = useSettingsStore()
+const { settings } = storeToRefs(SettingsStore)
+const { expansions, theme, language } = settings.value
+
 function selectExpansions(expansions: ExpansionName[]) {
-  console.log(expansions)
+  SettingsStore.setExpansions(expansions)
 }
 
 function selectTheme(theme: ThemeName) {
-  console.log(theme)
+  SettingsStore.setTheme(theme)
 }
 
 function selectLanguage(language: LanguageName) {
-  console.log(language);
+  SettingsStore.setLanguage(language)
 }
 </script>
 
@@ -16,9 +20,9 @@ function selectLanguage(language: LanguageName) {
 <div :class="$style.container">
   <h2>Settings</h2>
   <div :class="$style.wrapper">
-    <UiExpansionsSelect :class="$style.expansions" @select="selectExpansions" />
-    <UiThemeSelect :class="$style.theme" @select="selectTheme" />
-    <UiLanguageSelect :class="$style.language" @select="selectLanguage" />
+    <UiExpansionsSelect :class="$style.expansions" :selected="expansions" @select="selectExpansions" />
+    <UiThemeSelect :class="$style.theme" :selected="theme" @select="selectTheme" />
+    <UiLanguageSelect :class="$style.language" :selected="language" @select="selectLanguage" />
   </div>
 </div>
 </template>
