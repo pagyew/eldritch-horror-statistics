@@ -25,16 +25,12 @@ function change(items: ExpansionName[]) {
 
 <template>
 <ClientOnly>
-  <Vueform class="form" @change="change">
-    <StaticElement name="title" tag="h3" content="Select expansions" align="center" />
+  <Vueform v-bind="$attrs">
+    <StaticElement name="title" tag="h4" content="Select expansions" align="center" />
     <CheckboxgroupElement name="expansions" :default="[EXPANSION.CORE, ...props.selected]" :disables="[EXPANSION.CORE]"
-      :items="expansions" view="blocks" />
+      :items="expansions" @change="change" view="blocks" />
   </Vueform>
 </ClientOnly>
 </template>
 
-<style scoped>
-.form {
-  width: max-content;
-}
-</style>
+<style scoped></style>
