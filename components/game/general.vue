@@ -1,14 +1,21 @@
 <script setup lang="ts">
 const ancientNames = Object.values(ANCIENT)
-const id = crypto.randomUUID()
+
+const props = defineProps({
+  game: {
+    type: Object as PropType<IGameGeneral>,
+    required: true
+  }
+})
+const { id, date, ancientName, playerCount } = props.game
 
 const emits = defineEmits<{
-  submit: [game: IGameNew]
+  submit: [game: IGameGeneral]
   cancel: []
 }>()
 
 function submit(form$: Vueform) {
-  emits('submit', form$.requestData as IGameNew)
+  emits('submit', form$.requestData as IGameGeneral)
 }
 
 function cancel() {
@@ -20,21 +27,20 @@ function cancel() {
 <div class="container">
   <ClientOnly>
     <Vueform class="form" :endpoint="false" @submit="submit">
-      <StaticElement name="head" tag="h2" content="Create a new game" />
+      <StaticElement name="head" tag="h2" content="Edit general info" />
       <!-- ID -->
       <HiddenElement name="id" :default="id" />
       <!-- Date -->
-      <DateElement name="date" label="Date" :default="new Date()" display-format="MMMM DD, YYYY" />
+      <DateElement name="date" label="Date" :default="date" display-format="MMMM DD, YYYY" />
       <!-- AncientName -->
-      <SelectElement name="ancientName" label="Ancient One" :default="ANCIENT.AZATHOTH" :items="ancientNames" />
+      <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ancientNames" />
       <!-- PlayerCount -->
-      <SelectElement name="playerCount" label="Number of players" :default="4" :items="arr(8, { start: 1 })" />
-      <!-- isWin ? -->
-      <ToggleElement name="isWin" label="Result" :default="false" :labels="{ on: 'Win', off: 'Loss' }" />
+      <SelectElement name="playerCount" label="Number of players" :default="playerCount"
+        :items="arr(8, { start: 1 })" />
       <!-- Submit buttons -->
       <GroupElement class="buttons" name="buttons">
         <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
-        <ButtonElement name="submit" button-label="Create game" align="right" submits :columns="6" />
+        <ButtonElement name="submit" button-label="Save" align="right" submits :columns="6" />
       </GroupElement>
     </Vueform>
   </ClientOnly>

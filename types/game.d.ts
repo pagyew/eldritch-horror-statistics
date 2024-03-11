@@ -13,6 +13,8 @@ declare interface IGame extends IGameNew {
   results?: IGameWinResults | IGameLoseResults
 }
 
+declare type IGameGeneral = Pick<IGame, 'id' | 'date' | 'ancientName' | 'playerCount'>
+
 declare interface IGameWin extends IGame {
   isWin: true
   results: IGameWinResults
