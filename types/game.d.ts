@@ -13,8 +13,6 @@ declare interface IGame extends IGameNew {
   results?: IGameWinResults | IGameLoseResults
 }
 
-declare type IGameGeneral = Pick<IGame, 'id' | 'date' | 'ancientName' | 'playerCount'>
-
 declare interface IGameWin extends IGame {
   isWin: true
   results: IGameWinResults
@@ -48,3 +46,6 @@ declare interface IGameWinResults extends IGameResults {
 declare interface IGameLoseResults extends IGameResults {
   reason: ReasonName
 }
+
+declare type IGameGeneralProps = Pick<IGame, 'id' | 'date' | 'ancientName' | 'playerCount'>
+declare type IGameRulesProps = Pick<IGame, 'id' | 'rules'>
