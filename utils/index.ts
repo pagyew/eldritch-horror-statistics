@@ -73,3 +73,8 @@ export function join(arr: any, separator: string = ', ') {
 
   return arr.join(separator)
 }
+
+export function mergeBy<T, K, P extends Extract<keyof T, keyof K>>(arr1: T[], arr2: K[], key: P): Array<T & K> {
+  const obj2 = Object.fromEntries(arr2.map(elem => [elem[key], elem]))
+  return arr1.map(elem => ({ ...elem, ...obj2[elem[key]] }))
+}
