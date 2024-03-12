@@ -4,4 +4,5 @@ declare interface IInvestigator {
   name: InvestigatorName
   expansion: ExpansionName
   specialization: string
+  imageUrl: string
 }
