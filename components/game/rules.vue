@@ -1,21 +1,22 @@
 <script setup lang="ts">
-const ancientNames = Object.values(ANCIENT)
+const preludeNames = [{ label: 'None', value: null }, ...Object.values(PRELUDE)]
+const mythos = ['easy', 'normal', 'hard']
 
 const props = defineProps({
   game: {
-    type: Object as PropType<IGameGeneralProps>,
+    type: Object as PropType<IGameRulesProps>,
     required: true
   }
 })
-const { id, date, ancientName, playerCount } = props.game
+const { id, rules } = props.game
 
 const emits = defineEmits<{
-  submit: [game: IGameGeneralProps]
+  submit: [game: IGameRulesProps]
   cancel: []
 }>()
 
 function submit(form$: Vueform) {
-  emits('submit', form$.requestData as IGameGeneralProps)
+  emits('submit', form$.requestData as IGameRulesProps)
 }
 
 function cancel() {
@@ -27,16 +28,18 @@ function cancel() {
 <div class="container">
   <ClientOnly>
     <Vueform class="form" :endpoint="false" @submit="submit">
-      <StaticElement name="head" tag="h2" content="Edit general info" />
+      <StaticElement name="head" tag="h2" content="Edit rules" />
       <!-- ID -->
       <HiddenElement name="id" :default="id" />
-      <!-- Date -->
-      <DateElement name="date" label="Date" :default="date" display-format="MMMM DD, YYYY" />
-      <!-- AncientName -->
-      <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ancientNames" />
-      <!-- PlayerCount -->
-      <SelectElement name="playerCount" label="Number of players" :default="playerCount"
-        :items="arr(8, { start: 1 })" />
+      <!-- Rules -->
+      <ObjectElement name="rules">
+        <!-- Prelude -->
+        <SelectElement name="prelude" label="Prelude" :default="rules?.preludeName" :items="preludeNames" />
+        <!-- Starting Rumor -->
+        <ToggleElement name="startingRumor" label="Starting rumor" :default="rules?.startingRumor" />
+        <!-- Mythos -->
+        <CheckboxgroupElement name="mythos" label="Mythos" :default="rules?.mythos" :items="mythos" view="blocks" />
+      </ObjectElement>
       <!-- Submit buttons -->
       <GroupElement class="buttons" name="buttons">
         <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
