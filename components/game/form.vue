@@ -98,7 +98,7 @@ function cancel() {
             view="blocks" />
         </ObjectElement>
       </GroupElement>
-      <GroupElement class="group" name="investigaters" :columns="6">
+      <GroupElement class="group" name="investigators" :columns="6">
         <!-- Investigators -->
         <StaticElement name="investigators_title" content="Investigators" tag="h3" />
         <!-- TODO: Refactor this shit -->
