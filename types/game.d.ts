@@ -1,8 +1,11 @@
-declare interface IGameNew {
-  id: string
+declare interface IGameGeneral {
   date: string
   ancientName: AncientName
   playerCount: number
+}
+
+declare interface IGameNew extends IGameGeneral {
+  id: string
   isWin: boolean
 }
 
@@ -31,8 +34,8 @@ declare interface IGameLose extends IGame {
 
 declare interface IGameRules {
   preludeName?: PreludeName
-  startingRumor: boolean
-  mythos: IGameMythos[]
+  hasStartingRumor?: boolean
+  mythos?: IGameMythos[]
 }
 
 declare type IGameMythos = 'easy' | 'normal' | 'hard'
@@ -40,7 +43,7 @@ declare type IGameMythos = 'easy' | 'normal' | 'hard'
 declare interface IGameResults {
   solvedMysteryCount: number
   time: number
-  comment?: string
+  comment: string
   scores?: IScores
   reason?: ReasonName
 }
@@ -52,6 +55,3 @@ declare interface IGameWinResults extends IGameResults {
 declare interface IGameLoseResults extends IGameResults {
   reason: ReasonName
 }
-
-declare type IGameGeneralProps = Pick<IGame, 'id' | 'date' | 'ancientName' | 'playerCount'>
-declare type IGameRulesProps = Pick<IGame, 'id' | 'rules'>
