@@ -21,7 +21,7 @@ const { editing, game } = defineProps({
       date: new Date(),
       ancientName: ANCIENT.AZATHOTH,
       expansionNames: [],
-      investigatorNames: [],
+      investigators: [],
       playerCount: 4,
       rules: {
         startingRumor: false,
@@ -102,8 +102,8 @@ function cancel() {
         <!-- Investigators -->
         <StaticElement name="investigators_title" content="Investigators" tag="h3" />
         <!-- TODO: Refactor this shit -->
-        <CheckboxgroupElement name="investigators" :default="game.investigatorNames" :items="investigators"
-          view="blocks" :add-classes="{
+        <CheckboxgroupElement name="investigators" :default="game.investigators" :items="investigators" view="blocks"
+          :add-classes="{
           CheckboxgroupCheckbox: {
             container: 'vf-col-3'
           }

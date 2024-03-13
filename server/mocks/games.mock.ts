@@ -4,7 +4,7 @@ export const MOCK_GAMES: IGame[] = [{
   ancientName: ANCIENT.AZATHOTH,
   playerCount: 4,
   expansionNames: [],
-  investigatorNames: [],
+  investigators: [],
   rules: {
     startingRumor: false,
     mythos: [
@@ -25,7 +25,7 @@ export const MOCK_GAMES: IGame[] = [{
   ancientName: ANCIENT.SYZYGY,
   playerCount: 5,
   expansionNames: [EXPANSION.STRANGE_REMNANTS],
-  investigatorNames: [],
+  investigators: [],
   rules: {
     startingRumor: true,
     mythos: [

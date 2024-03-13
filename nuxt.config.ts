@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
+  components: [
+    { path: '~/views', prefix: 'View', extensions: ['vue'] },
+    '~/components'
+  ],
+
   typescript: { shim: false },
 
   app: { rootId: 'app' },
