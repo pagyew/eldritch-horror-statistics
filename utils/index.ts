@@ -78,3 +78,7 @@ export function mergeBy<T, K, P extends Extract<keyof T, keyof K>>(arr1: T[], ar
   const obj2 = Object.fromEntries(arr2.map(elem => [elem[key], elem]))
   return arr1.map(elem => ({ ...elem, ...obj2[elem[key]] }))
 }
+
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(obj: T, key: K, value: V): T & Record<K, V> {
+  return { ...obj, [key]: value }
+}
