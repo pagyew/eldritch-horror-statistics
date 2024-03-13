@@ -57,8 +57,8 @@ onUnmounted(() => GamesStore.$reset())
     <div class="block investigators">
       <h3>Investigators</h3>
       <ul>
-        <li v-for="investigator in game.investigatorNames" :key="investigator">
-          {{ investigator }}
+        <li v-for="investigator in game.investigators" :key="investigator.name">
+          {{ investigator.name }}
         </li>
       </ul>
     </div>

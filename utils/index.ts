@@ -73,3 +73,41 @@ export function join(arr: any, separator: string = ', ') {
 
   return arr.join(separator)
 }
+
+export function groupBy<T extends Record<PropertyKey, any>>(arr: T[], key: keyof T) {
+  return arr.reduce((acc, elem) => {
+    const keyValue = elem[key]
+
+    if (!acc[keyValue]) {
+      acc[keyValue] = []
+    }
+
+    acc[keyValue].push(elem)
+
+    return acc
+  }, {} as { [k in T[keyof T]]: T[] })
+}
+
+export function mergeBy<T extends Record<PropertyKey, any>, P extends Record<PropertyKey, any>, K extends Extract<keyof T, keyof P>>(arr1: T[], arr2: P[], key: K) {
+  const grouped1 = groupBy(arr1, key)
+  const grouped2 = groupBy(arr2, key)
+  const keys = new Set([...Object.keys(grouped1), ...Object.keys(grouped2)]) as Set<(T & P)[K]>
+  const result: (T & P)[] = []
+
+  for (const key of keys) {
+    const items1 = grouped1[key] ?? []
+    const items2 = grouped2[key] ?? []
+    const item = {} as T & P
+
+    for (const item1 of items1) Object.assign(item, item1)
+    for (const item2 of items2) Object.assign(item, item2)
+
+    result.push(item)
+  }
+
+  return result
+}
+
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(obj: T, key: K, value: V): T & Record<K, V> {
+  return { ...obj, [key]: value }
+}

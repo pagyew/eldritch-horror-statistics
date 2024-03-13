@@ -10,10 +10,16 @@ declare interface IGameNew extends IGameGeneral {
 }
 
 declare interface IGame extends IGameNew {
-  expansionNames?: ExpansionName[]
-  investigatorNames?: InvestigatorName[]
-  rules?: IGameRules
-  results?: IGameWinResults | IGameLoseResults
+  expansionNames: ExpansionName[]
+  investigators: IGameInvestigator[]
+  rules: IGameRules
+  results: IGameWinResults | IGameLoseResults
+}
+
+declare interface IGameInvestigator {
+  name: InvestigatorName
+  team: InvestigatorTeam
+  isOut: boolean
 }
 
 declare interface IGameWin extends IGame {
