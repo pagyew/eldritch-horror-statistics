@@ -51,7 +51,7 @@ onUnmounted(() => GamesStore.$reset())
       </div>
       <div class="line">
         <span>Rumor</span>
-        <span>{{ game.rules?.startingRumor }}</span>
+        <span>{{ game.rules?.hasStartingRumor }}</span>
       </div>
     </div>
     <div class="block investigators">

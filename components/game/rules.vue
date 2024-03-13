@@ -1,22 +1,25 @@
 <script setup lang="ts">
-const preludeNames = [{ label: 'None', value: null }, ...Object.values(PRELUDE)]
-const mythos = ['easy', 'normal', 'hard']
+const preludeNames = Object.values(PRELUDE)
+const allMythos: IGameMythos[] = ['easy', 'normal', 'hard']
 
-const props = defineProps({
-  game: {
-    type: Object as PropType<IGameRulesProps>,
-    required: true
-  }
+const props = withDefaults(defineProps<{
+  preludeName?: PreludeName
+  hasStartingRumor?: boolean
+  mythos?: IGameMythos[]
+}>(), {
+  preludeName: 'None',
+  hasStartingRumor: false,
+  mythos: () => [...allMythos]
 })
-const { id, rules } = props.game
+const { preludeName, hasStartingRumor, mythos } = toRefs(props)
 
 const emits = defineEmits<{
-  submit: [game: IGameRulesProps]
+  submit: [rules: IGameRules]
   cancel: []
 }>()
 
 function submit(form$: Vueform) {
-  emits('submit', form$.requestData as IGameRulesProps)
+  emits('submit', form$.requestData as IGameRules)
 }
 
 function cancel() {
@@ -29,17 +32,12 @@ function cancel() {
   <ClientOnly>
     <Vueform class="form" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" content="Edit rules" />
-      <!-- ID -->
-      <HiddenElement name="id" :default="id" />
-      <!-- Rules -->
-      <ObjectElement name="rules">
-        <!-- Prelude -->
-        <SelectElement name="prelude" label="Prelude" :default="rules?.preludeName" :items="preludeNames" />
-        <!-- Starting Rumor -->
-        <ToggleElement name="startingRumor" label="Starting rumor" :default="rules?.startingRumor" />
-        <!-- Mythos -->
-        <CheckboxgroupElement name="mythos" label="Mythos" :default="rules?.mythos" :items="mythos" view="blocks" />
-      </ObjectElement>
+      <!-- Prelude -->
+      <SelectElement name="prelude" label="Prelude" :default="preludeName" :items="preludeNames" />
+      <!-- Starting Rumor -->
+      <ToggleElement name="startingRumor" label="Starting rumor" :default="hasStartingRumor" />
+      <!-- Mythos -->
+      <CheckboxgroupElement name="mythos" label="Mythos" :default="mythos" :items="allMythos" view="blocks" />
       <!-- Submit buttons -->
       <GroupElement class="buttons" name="buttons">
         <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />

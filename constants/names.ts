@@ -30,6 +30,7 @@ export const EXPANSION = {
 } as const
 
 export const PRELUDE = {
+  NONE: "None",
   BEGINNING_OF_THE_END: "Beginning of the End",
   DOOMSAYER_FROM_ANTARCTICA: "Doomsayer from Antarctica",
   KEY_TO_SALVATION: "Key to Salvation",

@@ -24,6 +24,7 @@ const { editing, game } = defineProps({
       investigatorNames: [],
       playerCount: 4,
       rules: {
+        preludeName: 'None',
         startingRumor: false,
         mythos: [
           'easy',
@@ -33,6 +34,7 @@ const { editing, game } = defineProps({
       },
       isWin: false,
       results: {
+        comment: '',
         solvedMysteryCount: 1,
         time: toMs({ h: 4 }),
         reason: REASON.SURRENDER,
@@ -92,7 +94,7 @@ function cancel() {
           <!-- Prelude -->
           <SelectElement name="prelude" label="Prelude" :default="game.rules?.preludeName" :items="preludeNames" />
           <!-- Starting Rumor -->
-          <ToggleElement name="startingRumor" label="Starting rumor" :default="game.rules?.startingRumor" />
+          <ToggleElement name="startingRumor" label="Starting rumor" :default="game.rules?.hasStartingRumor" />
           <!-- Mythos -->
           <CheckboxgroupElement name="mythos" label="Mythos" :default="game.rules?.mythos" :items="mythos"
             view="blocks" />

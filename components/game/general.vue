@@ -1,21 +1,20 @@
 <script setup lang="ts">
 const ancientNames = Object.values(ANCIENT)
 
-const props = defineProps({
-  game: {
-    type: Object as PropType<IGameGeneralProps>,
-    required: true
-  }
-})
-const { id, date, ancientName, playerCount } = props.game
+const props = defineProps<{
+  date: string
+  ancientName: AncientName
+  playerCount: number
+}>()
+const { date, ancientName, playerCount } = toRefs(props)
 
 const emits = defineEmits<{
-  submit: [game: IGameGeneralProps]
+  submit: [general: IGameGeneral]
   cancel: []
 }>()
 
 function submit(form$: Vueform) {
-  emits('submit', form$.requestData as IGameGeneralProps)
+  emits('submit', form$.requestData as IGameGeneral)
 }
 
 function cancel() {
@@ -28,8 +27,6 @@ function cancel() {
   <ClientOnly>
     <Vueform class="form" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" content="Edit general info" />
-      <!-- ID -->
-      <HiddenElement name="id" :default="id" />
       <!-- Date -->
       <DateElement name="date" label="Date" :default="date" display-format="MMMM DD, YYYY" />
       <!-- AncientName -->

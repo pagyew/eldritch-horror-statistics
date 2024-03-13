@@ -6,7 +6,8 @@ export const MOCK_GAMES: IGame[] = [{
   expansionNames: [],
   investigatorNames: [],
   rules: {
-    startingRumor: false,
+    preludeName: 'None',
+    hasStartingRumor: false,
     mythos: [
       'easy',
       'normal',
@@ -15,6 +16,7 @@ export const MOCK_GAMES: IGame[] = [{
   },
   isWin: false,
   results: {
+    comment: '',
     solvedMysteryCount: 1,
     time: 4 * 60 * 60 * 1000,
     reason: REASON.SURRENDER
@@ -27,7 +29,8 @@ export const MOCK_GAMES: IGame[] = [{
   expansionNames: [EXPANSION.STRANGE_REMNANTS],
   investigatorNames: [],
   rules: {
-    startingRumor: true,
+    preludeName: 'None',
+    hasStartingRumor: true,
     mythos: [
       'easy',
       'normal',
@@ -36,6 +39,7 @@ export const MOCK_GAMES: IGame[] = [{
   },
   isWin: true,
   results: {
+    comment: '',
     solvedMysteryCount: 3,
     time: 3 * 60 * 60 * 1000,
     scores: {
