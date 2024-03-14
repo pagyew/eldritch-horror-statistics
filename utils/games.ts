@@ -7,5 +7,14 @@ export function isResulted<T extends IGame>(game: T): game is T & IGameResulted 
 }
 
 export function calculateScore(game: IGameWin & IGameResulted) {
-  return Object.values(game.results.scores).reduce((a, b) => a + b, 0)
+  const { gates, monsters, cursed, rumors, clues, blessed, doom } = game.results.scores
+  return (
+    gates
+    + Math.ceil(monsters / 3)
+    + cursed
+    + rumors * 3
+    - Math.ceil(clues / 3)
+    - blessed
+    - doom
+  )
 }
