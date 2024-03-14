@@ -10,10 +10,10 @@ declare interface IGameNew extends IGameGeneral {
 }
 
 declare interface IGame extends IGameNew {
-  expansionNames: ExpansionName[]
-  investigators: IGameInvestigator[]
-  rules: IGameRules
-  results: IGameWinResults | IGameLoseResults
+  expansionNames?: ExpansionName[]
+  investigators?: IGameInvestigator[]
+  rules?: IGameRules
+  results?: IGameWinResults | IGameLoseResults
 }
 
 declare interface IGameInvestigator {
@@ -22,14 +22,18 @@ declare interface IGameInvestigator {
   isOut: boolean
 }
 
+declare interface IGameResulted extends IGame {
+  results: IGameWinResults | IGameLoseResults
+}
+
 declare interface IGameWin extends IGame {
   isWin: true
-  results: IGameWinResults
+  results?: IGameWinResults
 }
 
 declare interface IGameLose extends IGame {
   isWin: false
-  results: IGameLoseResults
+  results?: IGameLoseResults
 }
 
 declare interface IGameRules {
@@ -43,7 +47,7 @@ declare type IGameMythos = 'easy' | 'normal' | 'hard'
 declare interface IGameResults {
   solvedMysteryCount: number
   time: number
-  comment: string
+  comment?: string
   scores?: IScores
   reason?: ReasonName
 }

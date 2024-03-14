@@ -31,7 +31,9 @@ function detail(id: string) {
           <div>{{ game.playerCount }}</div>
         </div>
         <div class="result">
-          <span v-if="game.isWin">{{ calculateScore(game as IGameWin) }}</span>
+          <span v-if="isWinner(game) && isResulted(game)">
+            {{ calculateScore(game) }}
+          </span>
           <span>{{ game.isWin }}</span>
         </div>
       </div>
