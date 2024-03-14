@@ -20,6 +20,8 @@
     "@vueform/nuxt": "^1.4.0",
     "@vueuse/components": "^10.9.0",
     "@vueuse/core": "^10.9.0",
-    "@vueuse/nuxt": "^10.9.0"
+    "@vueuse/nuxt": "^10.9.0",
+    "typescript": "^5.4.2",
+    "vue-tsc": "^1.8.27"
   }
 }

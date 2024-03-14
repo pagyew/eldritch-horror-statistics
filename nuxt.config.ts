@@ -7,7 +7,10 @@ export default defineNuxtConfig({
     '~/components'
   ],
 
-  typescript: { shim: false },
+  typescript: {
+    shim: false,
+    typeCheck: true
+  },
 
   app: { rootId: 'app' },
 
