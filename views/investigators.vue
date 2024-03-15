@@ -26,10 +26,10 @@ function remove(name: InvestigatorName) {
 </script>
 
 <template>
-<div class="container">
-  <div class="form">
+<div :class="css.container">
+  <div :class="css.form">
     <h2>Select investigators</h2>
-    <div class="cards">
+    <div :class="css.cards">
       <UiInvestigator v-for="investigator of investigatorCards" :key="investigator.name" v-bind="investigator"
         @select="change" @remove="remove" />
     </div>
@@ -38,7 +38,7 @@ function remove(name: InvestigatorName) {
 </div>
 </template>
 
-<style scoped>
+<style module="css">
 .container {
   display: flex;
   justify-content: center;

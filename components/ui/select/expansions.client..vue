@@ -30,4 +30,4 @@ function change(items: ExpansionName[]) {
 </Vueform>
 </template>
 
-<style scoped></style>
+<style module></style>

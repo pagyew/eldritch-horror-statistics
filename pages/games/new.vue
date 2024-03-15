@@ -25,4 +25,4 @@ function cancel() {
 <GameNew @submit="create" @cancel="cancel" />
 </template>
 
-<style scoped></style>
+<style module></style>

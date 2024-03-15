@@ -2,13 +2,13 @@
 </script>
 
 <template>
-<footer>
+<footer :class="css.footer">
   It's footer
 </footer>
 </template>
 
-<style scoped>
-footer {
+<style module="css">
+.footer {
   border: 1px solid black;
   padding: 10px;
 }

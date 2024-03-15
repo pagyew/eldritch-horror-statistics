@@ -17,18 +17,18 @@ function selectLanguage(language: LanguageName) {
 </script>
 
 <template>
-<div :class="$style.container">
+<div :class="css.container">
   <h2>Settings</h2>
-  <div :class="$style.wrapper">
-    <UiExpansionsSelect :class="$style.expansions" :selected="expansions" @select="selectExpansions" />
-    <UiThemeSelect :class="$style.theme" :selected="theme" @select="selectTheme" />
-    <UiLanguageSelect :class="$style.language" :selected="language" @select="selectLanguage" />
+  <div :class="css.wrapper">
+    <UiExpansionsSelect :class="css.expansions" :selected="expansions" @select="selectExpansions" />
+    <UiThemeSelect :class="css.theme" :selected="theme" @select="selectTheme" />
+    <UiLanguageSelect :class="css.language" :selected="language" @select="selectLanguage" />
   </div>
 </div>
 </template>
 
 
-<style module>
+<style module="css">
 .container {
   display: flex;
   flex-direction: column;
