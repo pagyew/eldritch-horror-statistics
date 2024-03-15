@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<header>
+<header :class="css.header">
   It's header
   <nav>
     <ul>
@@ -24,8 +24,8 @@
 </header>
 </template>
 
-<style scoped>
-header {
+<style module="css">
+.header {
   border: 1px solid black;
   padding: 10px;
 }

@@ -72,12 +72,12 @@ function cancel() {
     </ul>
   </nav>
 </header>
-<div class="container">
+<div :class="css.container">
   <ClientOnly>
-    <Vueform class="form" :endpoint="false" @submit="submit">
+    <Vueform :class="css.form" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" :content="title" />
       <StaticElement name="divider" tag="hr" />
-      <GroupElement class="group" name="general" :columns="6">
+      <GroupElement :class="css.group" name="general" :columns="6">
         <StaticElement name="general_title" tag="h3" content="General" />
         <!-- Date -->
         <DateElement name="date" label="Date" rules="required" :default="game.date" display-format="MMMM DD, YYYY" />
@@ -87,7 +87,7 @@ function cancel() {
         <SelectElement name="players" label="Number of players" :default="game.playerCount"
           :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
       </GroupElement>
-      <GroupElement class="group" name="rules" :columns="6">
+      <GroupElement :class="css.group" name="rules" :columns="6">
         <!-- Additional Rules -->
         <ObjectElement name="rules">
           <StaticElement name="additional" content="Additional Rules" tag="h3" />
@@ -100,7 +100,7 @@ function cancel() {
             view="blocks" />
         </ObjectElement>
       </GroupElement>
-      <GroupElement class="group" name="investigators" :columns="6">
+      <GroupElement :class="css.group" name="investigators" :columns="6">
         <!-- Investigators -->
         <StaticElement name="investigators_title" content="Investigators" tag="h3" />
         <!-- TODO: Refactor this shit -->
@@ -115,7 +115,7 @@ function cancel() {
           }
         }" />
       </GroupElement>
-      <GroupElement class="group" name="results" :columns="6">
+      <GroupElement :class="css.group" name="results" :columns="6">
         <!-- Results -->
         <StaticElement name="results_title" content="Result" tag="h3" />
         <ObjectElement name="results">
@@ -155,7 +155,7 @@ function cancel() {
 </div>
 </template>
 
-<style scoped>
+<style module="css">
 .container {
   display: flex;
   justify-content: center;

@@ -17,9 +17,9 @@ function cancel() {
 </script>
 
 <template>
-<div class="container">
+<div :class="css.container">
   <ClientOnly>
-    <Vueform class="form" :endpoint="false" @submit="submit">
+    <Vueform :class="css.form" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" content="Create a new game" />
       <!-- ID -->
       <HiddenElement name="id" :default="id" />
@@ -32,7 +32,7 @@ function cancel() {
       <!-- isWin ? -->
       <ToggleElement name="isWin" label="Result" :default="false" :labels="{ on: 'Win', off: 'Loss' }" />
       <!-- Submit buttons -->
-      <GroupElement class="buttons" name="buttons">
+      <GroupElement :class="css.buttons" name="buttons">
         <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
         <ButtonElement name="submit" button-label="Create game" align="right" submits :columns="6" />
       </GroupElement>
@@ -41,7 +41,7 @@ function cancel() {
 </div>
 </template>
 
-<style scoped>
+<style module="css">
 .container {
   display: flex;
   justify-content: center;

@@ -27,34 +27,34 @@ onUnmounted(() => GamesStore.$reset())
   <p v-if="pending">Loading...</p>
   <pre v-else-if="error">{{ error }}</pre>
   <p v-else-if="!game">Game with id {{ gameId }} not found</p>
-  <section v-else>
-    <div class="block general">
+  <section v-else :class="css.section">
+    <div :class="[css.block, css.general]">
       <h3>General</h3>
-      <div class="line">
+      <div :class="css.line">
         <span>Ancient</span>
         <span>{{ game.ancientName }}</span>
       </div>
-      <div class="line">
+      <div :class="css.line">
         <span>Players</span>
         <span>{{ game.playerCount }}</span>
       </div>
-      <div class="line">
+      <div :class="css.line">
         <span>Date</span>
         <span>{{ game.date }}</span>
       </div>
     </div>
-    <div class="block rules">
+    <div :class="[css.block, css.rules]">
       <h3>Rules</h3>
-      <div class="line">
+      <div :class="css.line">
         <span>Mythos</span>
         <span>{{ join(game.rules?.mythos) }}</span>
       </div>
-      <div class="line">
+      <div :class="css.line">
         <span>Rumor</span>
         <span>{{ game.rules?.hasStartingRumor }}</span>
       </div>
     </div>
-    <div class="block investigators">
+    <div :class="[css.block, css.investigators]">
       <h3>Investigators</h3>
       <ul>
         <li v-for="investigator in game.investigators" :key="investigator.name">
@@ -62,13 +62,13 @@ onUnmounted(() => GamesStore.$reset())
         </li>
       </ul>
     </div>
-    <div class="block results">
+    <div :class="[css.block, css.results]">
       <h3>Results</h3>
       <p>{{ game.isWin }}</p>
       <p>{{ formatTime(game.results?.time ?? 0) }}</p>
       <p>Solved mysteries: {{ game.results?.solvedMysteryCount }}</p>
       <div v-if="game.isWin">
-        <div class="line" v-for="(score, name) in game.results?.scores" :key="name">
+        <div :class="css.line" v-for="(score, name) in game.results?.scores" :key="name">
           <span>{{ SCORE[upper(name)] }}</span>
           <span>{{ score }}</span>
         </div>
@@ -80,8 +80,8 @@ onUnmounted(() => GamesStore.$reset())
 </main>
 </template>
 
-<style scoped>
-section {
+<style module="css">
+.section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;

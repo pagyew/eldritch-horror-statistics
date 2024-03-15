@@ -30,4 +30,4 @@ function save(data: any) {
 <GameForm v-else @submit="save" @cancel="cancel" editing :game="game" />
 </template>
 
-<style scoped></style>
+<style module></style>

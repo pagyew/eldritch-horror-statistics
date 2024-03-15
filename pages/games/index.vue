@@ -12,25 +12,25 @@ function detail(id: string) {
 <Head>
   <Title>My games</Title>
 </Head>
-<section>
+<section :class="css.section">
   <h2>My games</h2>
   <NuxtLink to="/games/new">Create new game</NuxtLink>
   <p v-if="pending">Loading...</p>
   <p v-else-if="error">Request failed with an error {{ error.message }}</p>
-  <main v-else>
-    <header>
+  <main v-else :class="css.main">
+    <header :class="css.header">
       <span>All: {{ gamesCount }}</span>
       <span>Worst: {{ worstScore }}</span>
       <span>Best: {{ bestScore }}</span>
     </header>
-    <div class="games">
-      <div class="game" v-for="game in games" :key="game.id" @click="detail(game.id)">
-        <div class="info">
+    <div :class="css.games">
+      <div :class="css.game" v-for="game in games" :key="game.id" @click="detail(game.id)">
+        <div :class="css.info">
           <div>{{ game.date }}</div>
           <div>{{ game.ancientName }}</div>
           <div>{{ game.playerCount }}</div>
         </div>
-        <div class="result">
+        <div :class="css.result">
           <span v-if="isWinner(game) && isResulted(game)">
             {{ calculateScore(game) }}
           </span>
@@ -42,19 +42,19 @@ function detail(id: string) {
 </section>
 </template>
 
-<style scoped>
-section {
+<style module="css">
+.section {
   padding: 10px;
   border: 1px solid #111;
 }
 
-main {
+.main {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-header {
+.header {
   width: 50%;
   display: flex;
   justify-content: space-between;

@@ -28,9 +28,9 @@ function cancel() {
 </script>
 
 <template>
-<div class="container">
+<div :class="css.container">
   <ClientOnly>
-    <Vueform class="form" :endpoint="false" @submit="submit">
+    <Vueform :class="css.form" :endpoint="false" @submit="submit">
       <StaticElement name="head" tag="h2" content="Edit rules" />
       <!-- Prelude -->
       <SelectElement name="prelude" label="Prelude" :default="preludeName" :items="preludeNames" />
@@ -39,7 +39,7 @@ function cancel() {
       <!-- Mythos -->
       <CheckboxgroupElement name="mythos" label="Mythos" :default="mythos" :items="allMythos" view="blocks" />
       <!-- Submit buttons -->
-      <GroupElement class="buttons" name="buttons">
+      <GroupElement :class="css.buttons" name="buttons">
         <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
         <ButtonElement name="submit" button-label="Save" align="right" submits :columns="6" />
       </GroupElement>
@@ -48,7 +48,7 @@ function cancel() {
 </div>
 </template>
 
-<style scoped>
+<style module="css">
 .container {
   display: flex;
   justify-content: center;

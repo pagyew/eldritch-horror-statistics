@@ -9,4 +9,4 @@ const games = useGamesStore().games
 </section>
 </template>
 
-<style scoped></style>
+<style module></style>

@@ -23,4 +23,4 @@ function change(language: LanguageName) {
 </Vueform>
 </template>
 
-<style scoped></style>
+<style module></style>

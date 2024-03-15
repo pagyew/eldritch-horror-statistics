@@ -23,4 +23,4 @@ function change(theme: ThemeName) {
 </Vueform>
 </template>
 
-<style scoped></style>
+<style module></style>
