@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { RadiogroupElement } from '@vueform/vueform'
+
+let mystery$: Nullable<RadiogroupElement> = null
 const ancientNames = Object.values(ANCIENT)
-const investigators = INVESTIGATORS.map(({ name, specialization }) => ({
+const investigatorCards = INVESTIGATORS.map(({ name, specialization }) => ({
   value: name,
   label: name,
   description: specialization
@@ -10,45 +13,40 @@ const reasonNames = Object.values(REASON)
 const mythos = ['easy', 'normal', 'hard']
 
 const emits = defineEmits(['submit', 'cancel'])
-const { editing, game } = defineProps({
-  editing: {
-    type: Boolean,
-    default: false
-  },
-  game: {
-    type: Object as PropType<IGame>,
-    default: () => ({
-      date: new Date(),
-      ancientName: ANCIENT.AZATHOTH,
-      expansionNames: [],
-      investigators: [],
-      playerCount: 4,
-      rules: {
-        preludeName: 'None',
-        startingRumor: false,
-        mythos: [
-          'easy',
-          'normal',
-          'hard'
-        ],
-      },
-      isWin: false,
-      results: {
-        comment: '',
-        solvedMysteryCount: 1,
-        time: toMs({ h: 4 }),
-        reason: REASON.SURRENDER,
-        scores: Object.fromEntries(
-          Object.entries(SCORE)
-            .map(([k]) => [lower(k), 0])
-        )
-      }
-    })
-  }
+const props = withDefaults(defineProps<{
+  editing: boolean
+  id: string
+  date: string
+  ancientName: AncientName
+  playerCount: number
+  isWin: boolean
+  expansionNames?: ExpansionName[]
+  investigators?: IGameInvestigator[]
+  rules?: IGameRules
+  results?: IGameWinResults | IGameLoseResults
+}>(), {
+  editing: false,
+  expansionNames: () => [],
+  investigators: () => [],
+  rules: () => ({
+    preludeName: 'None',
+    hasStartingRumor: false,
+    mythos: [
+      'easy',
+      'normal',
+      'hard'
+    ],
+  }),
+  results: () => ({
+    solvedMysteryCount: 1,
+    time: toMs({ h: 4 }),
+    reason: REASON.SURRENDER
+  })
 })
+const { editing, id, date, ancientName, playerCount, isWin, expansionNames, investigators, rules, results } = toRefs(props)
 
-const title = computed(() => editing ? 'Edit game' : 'Create new game')
-const action = computed(() => editing ? 'Save' : 'Create game')
+const title = computed(() => editing.value ? 'Edit game' : 'Create new game')
+const action = computed(() => editing.value ? 'Save' : 'Create game')
 
 function submit(form$: Vueform) {
   emits('submit', form$.requestData)
@@ -56,6 +54,24 @@ function submit(form$: Vueform) {
 
 function cancel() {
   emits('cancel')
+}
+
+function onFormMounted(form$: Vueform) {
+  mystery$ = form$.el$('results.results.solvedMysteryCount') as unknown as RadiogroupElement
+
+  if (!mystery$?.data) {
+    mystery$?.update(isWin ? 3 : 1)
+  }
+}
+
+function onWinChange(newValue: boolean) {
+  if (newValue) {
+    mystery$?.update(3)
+    mystery$?.disable([0, 1, 2])
+  } else {
+    mystery$?.update(1)
+    mystery$?.enableAll()
+  }
 }
 </script>
 
@@ -67,24 +83,24 @@ function cancel() {
         <NuxtLink to="/games">Back to My Games</NuxtLink>
       </li>
       <li>
-        <NuxtLink :to="`/games/${game.id}`">Back to preview</NuxtLink>
+        <NuxtLink :to="`/games/${id}`">Back to preview</NuxtLink>
       </li>
     </ul>
   </nav>
 </header>
 <div :class="css.container">
   <ClientOnly>
-    <Vueform :class="css.form" :endpoint="false" @submit="submit">
+    <Vueform :class="css.form" ref="form$" :endpoint="false" @submit="submit" @mounted="onFormMounted">
       <StaticElement name="head" tag="h2" :content="title" />
       <StaticElement name="divider" tag="hr" />
       <GroupElement :class="css.group" name="general" :columns="6">
         <StaticElement name="general_title" tag="h3" content="General" />
         <!-- Date -->
-        <DateElement name="date" label="Date" rules="required" :default="game.date" display-format="MMMM DD, YYYY" />
+        <DateElement name="date" label="Date" rules="required" :default="date" display-format="MMMM DD, YYYY" />
         <!-- Ancient -->
-        <SelectElement name="ancient" label="Ancient One" :default="game.ancientName" :items="ancientNames" />
+        <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ancientNames" />
         <!-- Players -->
-        <SelectElement name="players" label="Number of players" :default="game.playerCount"
+        <SelectElement name="playerCount" label="Number of players" :default="playerCount"
           :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
       </GroupElement>
       <GroupElement :class="css.group" name="rules" :columns="6">
@@ -92,19 +108,18 @@ function cancel() {
         <ObjectElement name="rules">
           <StaticElement name="additional" content="Additional Rules" tag="h3" />
           <!-- Prelude -->
-          <SelectElement name="prelude" label="Prelude" :default="game.rules?.preludeName" :items="preludeNames" />
+          <SelectElement name="preludeName" label="Prelude" :default="rules.preludeName" :items="preludeNames" />
           <!-- Starting Rumor -->
-          <ToggleElement name="startingRumor" label="Starting rumor" :default="game.rules?.hasStartingRumor" />
+          <ToggleElement name="hasStartingRumor" label="Starting rumor" :default="rules.hasStartingRumor" />
           <!-- Mythos -->
-          <CheckboxgroupElement name="mythos" label="Mythos" :default="game.rules?.mythos" :items="mythos"
-            view="blocks" />
+          <CheckboxgroupElement name="mythos" label="Mythos" :default="rules.mythos" :items="mythos" view="blocks" />
         </ObjectElement>
       </GroupElement>
       <GroupElement :class="css.group" name="investigators" :columns="6">
         <!-- Investigators -->
         <StaticElement name="investigators_title" content="Investigators" tag="h3" />
         <!-- TODO: Refactor this shit -->
-        <CheckboxgroupElement name="investigators" :default="game.investigators" :items="investigators" view="blocks"
+        <CheckboxgroupElement name="investigators" :default="investigators" :items="investigatorCards" view="blocks"
           :add-classes="{
           CheckboxgroupCheckbox: {
             container: 'vf-col-3'
@@ -120,27 +135,23 @@ function cancel() {
         <StaticElement name="results_title" content="Result" tag="h3" />
         <ObjectElement name="results">
           <!-- Winner -->
-          <ToggleElement name="winner" text="Defeat" :default="game.isWin" />
-          <!-- TODO: EHS-2 -->
+          <ToggleElement name="isWin" text="Defeat" :default="isWin" @change="onWinChange" />
           <!-- Solved Mysteries -->
-          <RadiogroupElement name="solvedMysteries" label="Number of solved mysteries"
-            :default="game.results?.solvedMysteryCount" :items="[0, 1, 2, 3]" view="tabs" />
+          <RadiogroupElement name="solvedMysteryCount" label="Number of solved mysteries"
+            :default="results.solvedMysteryCount" :items="[0, 1, 2, 3, 4]" view="tabs" />
           <!-- Time -->
-          <SliderElement name="time" label="Time" :default="game.results?.time" type="number" :min="0"
-            :max="toMs({ h: 24 })" :step="toMs({ m: 15 })" show-tooltip="always" :format="formatTime" />
+          <SliderElement name="time" label="Time" :default="results.time" type="number" :min="0" :max="toMs({ h: 24 })"
+            :step="toMs({ m: 15 })" show-tooltip="always" :format="formatTime" />
           <!-- Comments -->
-          <TextareaElement name="comment" label="Comment" placeholder="It was terrible..."
-            :default="game.results?.comment" />
+          <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." :default="results.comment" />
           <!-- Reason for defeat -->
-          <RadiogroupElement name="reason" label="Reason for defeat" :default="game.results?.reason"
-            :items="reasonNames" :conditions="[['results.results.winner', false]]" view="blocks" />
+          <RadiogroupElement name="reason" label="Reason for defeat" :default="results.reason" :items="reasonNames"
+            :conditions="[['results.isWin', false]]" view="blocks" />
           <!-- Scoring -->
-          <ObjectElement name="scores" :conditions="[['results.results.winner', true]]">
+          <ObjectElement name="scores" :conditions="[['results.isWin', true]]">
             <StaticElement name="scores_title" content="Scoring" tag="h4" />
-            <!-- TODO: Add rules required|integer|min:0
-                  when issue was closed https://github.com/vueform/vueform/issues/149 -->
             <TextElement v-for="(title, label) in SCORE" :key="label" :name="lower(label)" :label="title"
-              :default="game.results?.scores?.[lower(label)]" input-type="number" rules="required|integer|min:0" />
+              :default="results.scores?.[lower(label)] ?? 0" input-type="number" rules="required|integer|min:0" />
           </ObjectElement>
         </ObjectElement>
       </GroupElement>
@@ -172,4 +183,4 @@ function cancel() {
   border: 1px solid #ccc;
   padding: 10px;
 }
-</style>
+</style>: any: any: any: any: any: any
