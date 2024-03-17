@@ -1,12 +1,12 @@
 export const useGamesStore = defineStore('games', () => {
-  const game = ref<IGame | null>(null)
+  const game = ref<Nullable<IGame>>(null)
   const games = useEHSStorage<IGame[]>('games', [])
-  const scores = computed(() => games.value.filter(isWinner).filter(isResulted).map(calculateScore))
+  const scores = computed(() => games.value.filter(isWinner).map(calculateScore))
   const gamesCount = computed(() => games.value.length)
   const worstScore = computed(() => findMax(scores.value))
   const bestScore = computed(() => findMin(scores.value))
 
-  function setCurrent(newGame: IGame | null) {
+  function setCurrent(newGame: Nullable<IGame>) {
     return game.value = newGame
   }
 

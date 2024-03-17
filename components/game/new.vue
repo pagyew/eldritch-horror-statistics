@@ -28,9 +28,7 @@ function cancel() {
       <!-- AncientName -->
       <SelectElement name="ancientName" label="Ancient One" :default="ANCIENT.AZATHOTH" :items="ancientNames" />
       <!-- PlayerCount -->
-      <SelectElement name="playerCount" label="Number of players" :default="4" :items="arr(8, { start: 1 })" />
-      <!-- isWin ? -->
-      <ToggleElement name="isWin" label="Result" :default="false" :labels="{ on: 'Win', off: 'Loss' }" />
+      <SelectElement name="playerCount" label="Number of players" :default="4" :items="arr(8)" />
       <!-- Submit buttons -->
       <GroupElement :class="css.buttons" name="buttons">
         <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />

@@ -27,7 +27,7 @@ function save(data: any) {
 <p v-if="pending">Loading...</p>
 <pre v-else-if="error">{{ error }}</pre>
 <p v-else-if="!game">Game with id {{ gameId }} not found</p>
-<GameForm v-else @submit="save" @cancel="cancel" editing :game="game" />
+<GameForm v-else @submit="save" @cancel="cancel" editing v-bind="game" />
 </template>
 
 <style module></style>
