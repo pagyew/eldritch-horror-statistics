@@ -32,8 +32,7 @@ function cancel() {
       <!-- AncientName -->
       <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ancientNames" />
       <!-- PlayerCount -->
-      <SelectElement name="playerCount" label="Number of players" :default="playerCount"
-        :items="arr(8, { start: 1 })" />
+      <SelectElement name="playerCount" label="Number of players" :default="playerCount" :items="arr(8)" />
       <!-- Submit buttons -->
       <GroupElement :class="css.buttons" name="buttons">
         <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
