@@ -37,9 +37,9 @@ declare interface IGameLose extends IGame {
 }
 
 declare interface IGameRules {
-  preludeName?: PreludeName
-  hasStartingRumor?: boolean
-  mythos?: IGameMythos[]
+  preludeName: PreludeName
+  hasStartingRumor: boolean
+  mythos: IGameMythos[]
 }
 
 declare type IGameMythos = 'easy' | 'normal' | 'hard'
