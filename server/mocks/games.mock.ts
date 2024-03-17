@@ -14,8 +14,8 @@ export const MOCK_GAMES: IGame[] = [{
       'hard'
     ]
   },
-  isWin: false,
   results: {
+    isWin: false,
     comment: '',
     solvedMysteryCount: 1,
     time: 4 * 60 * 60 * 1000,
@@ -37,8 +37,8 @@ export const MOCK_GAMES: IGame[] = [{
       'hard'
     ]
   },
-  isWin: true,
   results: {
+    isWin: true,
     comment: '',
     solvedMysteryCount: 3,
     time: 3 * 60 * 60 * 1000,

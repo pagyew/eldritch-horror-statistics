@@ -19,11 +19,10 @@ const props = withDefaults(defineProps<{
   date: string
   ancientName: AncientName
   playerCount: number
-  isWin: boolean
   expansionNames?: ExpansionName[]
   investigators?: IGameInvestigator[]
   rules?: IGameRules
-  results?: IGameWinResults | IGameLoseResults
+  results: IGameResults
 }>(), {
   editing: false,
   expansionNames: () => [],
@@ -38,12 +37,13 @@ const props = withDefaults(defineProps<{
     ],
   }),
   results: () => ({
+    isWin: false,
     solvedMysteryCount: 1,
     time: toMs({ h: 4 }),
     reason: REASON.SURRENDER
   })
 })
-const { editing, id, date, ancientName, playerCount, isWin, expansionNames, investigators, rules, results } = toRefs(props)
+const { editing, id, date, ancientName, playerCount, expansionNames, investigators, rules, results } = toRefs(props)
 
 const title = computed(() => editing.value ? 'Edit game' : 'Create new game')
 const action = computed(() => editing.value ? 'Save' : 'Create game')
@@ -60,7 +60,7 @@ function onFormMounted(form$: Vueform) {
   mystery$ = form$.el$('results.results.solvedMysteryCount') as unknown as RadiogroupElement
 
   if (!mystery$?.data) {
-    mystery$?.update(isWin ? 3 : 1)
+    mystery$?.update(results.value.isWin ? 3 : 1)
   }
 }
 
@@ -135,7 +135,8 @@ function onWinChange(newValue: boolean) {
         <StaticElement name="results_title" content="Result" tag="h3" />
         <ObjectElement name="results">
           <!-- Winner -->
-          <ToggleElement name="isWin" text="Defeat" :default="isWin" @change="onWinChange" />
+          <ToggleElement name="isWin" text="Defeat" :default="results.isWin" :labels="{ on: 'Win', off: 'Loss' }"
+            @change="onWinChange" />
           <!-- Solved Mysteries -->
           <RadiogroupElement name="solvedMysteryCount" label="Number of solved mysteries"
             :default="results.solvedMysteryCount" :items="[0, 1, 2, 3, 4]" view="tabs" />

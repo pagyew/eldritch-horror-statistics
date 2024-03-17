@@ -64,11 +64,11 @@ onUnmounted(() => GamesStore.$reset())
     </div>
     <div :class="[css.block, css.results]">
       <h3>Results</h3>
-      <p>{{ game.isWin }}</p>
+      <p>{{ game.results.isWin }}</p>
       <p>{{ formatTime(game.results?.time ?? 0) }}</p>
       <p>Solved mysteries: {{ game.results?.solvedMysteryCount }}</p>
-      <div v-if="game.isWin">
-        <div :class="css.line" v-for="(score, name) in game.results?.scores" :key="name">
+      <div v-if="isWinner(game)">
+        <div :class="css.line" v-for="(score, name) in game.results.scores" :key="name">
           <span>{{ SCORE[upper(name)] }}</span>
           <span>{{ score }}</span>
         </div>
