@@ -25,13 +25,13 @@ function detail(id: string) {
     </header>
     <div :class="css.games">
       <div :class="css.game" v-for="game in games" :key="game.id" @click="detail(game.id)">
-        <div :class="css.info">
-          <div>{{ game.date }}</div>
-          <div>{{ game.ancientName }}</div>
-          <div>{{ game.playerCount }}</div>
+        <div :class="css.general">
+          <div>{{ game.general.date }}</div>
+          <div>{{ game.general.ancientName }}</div>
+          <div>{{ game.general.playerCount }}</div>
         </div>
         <div :class="css.result">
-          <span v-if="isWinner(game)">
+          <span v-if="isScored(game)">
             {{ calculateScore(game) }}
           </span>
           <span>{{ game.results.isWin }}</span>
@@ -76,7 +76,7 @@ function detail(id: string) {
   cursor: pointer;
 }
 
-.info {
+.general {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

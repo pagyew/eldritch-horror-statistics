@@ -8,7 +8,7 @@ onUnmounted(() => GamesStore.$reset())
 
 <template>
 <Head>
-  <Title>Game - {{ game?.ancientName }}</Title>
+  <Title>Game - {{ game?.general.ancientName }}</Title>
 </Head>
 <h2>Game: {{ gameId }}</h2>
 <header>
@@ -32,15 +32,15 @@ onUnmounted(() => GamesStore.$reset())
       <h3>General</h3>
       <div :class="css.line">
         <span>Ancient</span>
-        <span>{{ game.ancientName }}</span>
+        <span>{{ game.general.ancientName }}</span>
       </div>
       <div :class="css.line">
         <span>Players</span>
-        <span>{{ game.playerCount }}</span>
+        <span>{{ game.general.playerCount }}</span>
       </div>
       <div :class="css.line">
         <span>Date</span>
-        <span>{{ game.date }}</span>
+        <span>{{ game.general.date }}</span>
       </div>
     </div>
     <div :class="[css.block, css.rules]">
