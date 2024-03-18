@@ -20,7 +20,7 @@ function save(data: any) {
 
 <template>
 <Head>
-  <Title>Editing Game - {{ game?.ancientName }}</Title>
+  <Title>Editing Game - {{ game?.general.ancientName }}</Title>
 </Head>
 <h2>Game: {{ gameId }}</h2>
 <p v-if="isLoading">Saving...</p>

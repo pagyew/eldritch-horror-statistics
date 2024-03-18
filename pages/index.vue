@@ -1,11 +1,14 @@
 <script setup lang="ts">
-const games = useGamesStore().games
+const GamesStore = useGamesStore()
+const { data: games, pending, error } = useAsyncData(() => GamesStore.getAll(), { server: false })
 </script>
 
 <template>
 <section>
   <h2>Home page</h2>
-  <pre>{{ games }}</pre>
+  <p v-if="pending">Loading...</p>
+  <p v-if="error">Error: {{ error }}</p>
+  <pre v-else>{{ games }}</pre>
 </section>
 </template>
 

@@ -1,8 +1,10 @@
 export const MOCK_GAMES: IGame[] = [{
   id: '1',
-  date: '2020-01-01',
-  ancientName: ANCIENT.AZATHOTH,
-  playerCount: 4,
+  general: {
+    date: '2020-01-01',
+    ancientName: ANCIENT.AZATHOTH,
+    playerCount: 4,
+  },
   expansionNames: [],
   investigators: [],
   rules: {
@@ -23,9 +25,11 @@ export const MOCK_GAMES: IGame[] = [{
   }
 }, {
   id: '2',
-  date: '2020-01-02',
-  ancientName: ANCIENT.SYZYGY,
-  playerCount: 5,
+  general: {
+    date: '2020-01-02',
+    ancientName: ANCIENT.SYZYGY,
+    playerCount: 5,
+  },
   expansionNames: [EXPANSION.STRANGE_REMNANTS],
   investigators: [],
   rules: {

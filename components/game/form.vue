@@ -16,9 +16,7 @@ const emits = defineEmits(['submit', 'cancel'])
 const props = withDefaults(defineProps<{
   editing: boolean
   id: string
-  date: string
-  ancientName: AncientName
-  playerCount: number
+  general: IGameGeneral
   expansionNames?: ExpansionName[]
   investigators?: IGameInvestigator[]
   rules?: IGameRules
@@ -43,7 +41,7 @@ const props = withDefaults(defineProps<{
     reason: REASON.SURRENDER
   })
 })
-const { editing, id, date, ancientName, playerCount, expansionNames, investigators, rules, results } = toRefs(props)
+const { editing, id, general, expansionNames, investigators, rules, results } = toRefs(props)
 
 const title = computed(() => editing.value ? 'Edit game' : 'Create new game')
 const action = computed(() => editing.value ? 'Save' : 'Create game')
@@ -95,13 +93,16 @@ function onWinChange(newValue: boolean) {
       <StaticElement name="divider" tag="hr" />
       <GroupElement :class="css.group" name="general" :columns="6">
         <StaticElement name="general_title" tag="h3" content="General" />
-        <!-- Date -->
-        <DateElement name="date" label="Date" rules="required" :default="date" display-format="MMMM DD, YYYY" />
-        <!-- Ancient -->
-        <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ancientNames" />
-        <!-- Players -->
-        <SelectElement name="playerCount" label="Number of players" :default="playerCount"
-          :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
+        <ObjectElement name="general">
+          <!-- Date -->
+          <DateElement name="date" label="Date" rules="required" :default="general.date"
+            display-format="MMMM DD, YYYY" />
+          <!-- Ancient -->
+          <SelectElement name="ancientName" label="Ancient One" :default="general.ancientName" :items="ancientNames" />
+          <!-- Players -->
+          <SelectElement name="playerCount" label="Number of players" :default="general.playerCount"
+            :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
+        </ObjectElement>
       </GroupElement>
       <GroupElement :class="css.group" name="rules" :columns="6">
         <!-- Additional Rules -->
