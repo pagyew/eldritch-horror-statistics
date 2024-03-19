@@ -138,3 +138,13 @@ export function sortBy<T>(arr: T[], options?: { key?: keyof T, order?: 'asc' | '
     return 0
   })
 }
+
+type StringKey = string & PropertyKey
+type StringKeyOf<T> = string & keyof T
+
+export function pick<T extends Record<string, any>, K extends StringKeyOf<T> | `${StringKeyOf<T>}:${StringKey}`>(obj: T, keys: K[]) {
+  return keys.reduce((acc, options) => {
+    const [key, alias] = options.split(':') as [keyof T, string]
+    return Object.assign(acc, { [alias ?? key]: obj[key] })
+  }, {} as { [k in K extends `${any}:${infer S}` ? S : K]: T[K extends `${infer F}:${any}` ? F : K] })
+}

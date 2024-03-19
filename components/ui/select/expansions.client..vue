@@ -10,12 +10,8 @@ const emits = defineEmits<{
 }>()
 
 const expansions = sortBy(EXPANSIONS, { key: 'releaseYear' })
-  .map(({ name, ancinets, logoUrl }) => ({
-    value: name,
-    label: name,
-    description: join(ancinets),
-    imageUrl: logoUrl
-  }))
+  .map(expansion => pick(expansion, ['name:value', 'name:label', 'ancinets', 'logoUrl:imageUrl']))
+  .map(expansion => ({ ...expansion, description: join(expansion.ancinets) }))
 
 function change(items: ExpansionName[]) {
   emits('select', items)
