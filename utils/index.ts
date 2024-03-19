@@ -112,3 +112,29 @@ export function mergeBy<T extends Record<PropertyKey, any>, P extends Record<Pro
 export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(obj: T, key: K, value: V): T & Record<K, V> {
   return { ...obj, [key]: value }
 }
+
+export function sortBy<T>(arr: T[], options?: { key?: keyof T, order?: 'asc' | 'desc' }) {
+  const { key, order = 'asc' } = options ?? {}
+  return arr.toSorted((a, b) => {
+    let aValue
+    let bValue
+
+    if (typeof key !== 'undefined' && ((typeof a === 'object' && a !== null) || Array.isArray(a))) {
+      aValue = a[key]
+      bValue = b[key]
+    } else {
+      aValue = a
+      bValue = b
+    }
+
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return order === 'desc' ? bValue - aValue : aValue - bValue
+    }
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return order === 'desc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue)
+    }
+
+    return 0
+  })
+}

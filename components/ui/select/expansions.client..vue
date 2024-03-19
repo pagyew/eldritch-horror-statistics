@@ -4,12 +4,12 @@ const props = withDefaults(defineProps<{
 }>(), {
   selected: () => []
 })
+
 const emits = defineEmits<{
   select: [expansions: ExpansionName[]]
 }>()
 
-const expansions = EXPANSIONS
-  .sort((a, b) => a.releaseYear - b.releaseYear)
+const expansions = sortBy(EXPANSIONS, { key: 'releaseYear' })
   .map(({ name, ancinets, logoUrl }) => ({
     value: name,
     label: name,
