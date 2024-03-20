@@ -109,8 +109,10 @@ export function mergeBy<T extends Record<PropertyKey, any>, P extends Record<Pro
   return result
 }
 
-export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(obj: T, key: K, value: V): T & Record<K, V> {
-  return { ...obj, [key]: value }
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(key: K, value: V) {
+  return function (obj: T): T & Record<K, V> {
+    return { ...obj, [key]: value }
+  }
 }
 
 export function sortBy<T>(arr: T[], options?: { key?: keyof T, order?: 'asc' | 'desc' }) {
@@ -142,9 +144,11 @@ export function sortBy<T>(arr: T[], options?: { key?: keyof T, order?: 'asc' | '
 type StringKey = string & PropertyKey
 type StringKeyOf<T> = string & keyof T
 
-export function pick<T extends Record<string, any>, K extends StringKeyOf<T> | `${StringKeyOf<T>}:${StringKey}`>(obj: T, keys: K[]) {
-  return keys.reduce((acc, options) => {
-    const [key, alias] = options.split(':') as [keyof T, string]
-    return Object.assign(acc, { [alias ?? key]: obj[key] })
-  }, {} as { [k in K extends `${any}:${infer S}` ? S : K]: T[K extends `${infer F}:${any}` ? F : K] })
+export function pick<T extends Record<string, any>, K extends StringKeyOf<T> | `${StringKeyOf<T>}:${StringKey}`>(keys: K[]) {
+  return function (obj: T) {
+    return keys.reduce((acc, options) => {
+      const [key, alias] = options.split(':') as [keyof T, string]
+      return Object.assign(acc, { [alias ?? key]: obj[key] })
+    }, {} as { [k in K extends `${any}:${infer S}` ? S : K]: T[K extends `${infer F}:${any}` ? F : K] })
+  }
 }

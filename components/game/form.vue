@@ -3,8 +3,8 @@ import type { RadiogroupElement } from '@vueform/vueform'
 
 let mystery$: Nullable<RadiogroupElement> = null
 const ancientNames = Object.values(ANCIENT)
-const investigatorCards = INVESTIGATORS.map(investigator =>
-  pick(investigator, ['name:value', 'name:label', 'specialization:description']))
+const investigatorCards = INVESTIGATORS
+  .map(pick(['name:value', 'name:label', 'specialization:description']))
 const preludeNames = [{ value: null, label: 'None' }, ...Object.values(PRELUDE)]
 const reasonNames = Object.values(REASON)
 const mythos = ['easy', 'normal', 'hard']
