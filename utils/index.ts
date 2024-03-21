@@ -159,3 +159,19 @@ export function apply<T extends Record<PropertyKey, any>, K extends keyof T, F e
     return obj as { [k in keyof T]: k extends K ? ReturnType<F> : T[k] }
   }
 }
+
+export function map<T, R>(arr: T[], fn: (v: T) => R): R[]
+export function map<T, R>(fn: (v: T) => R): (arr: T[]) => R[]
+export function map<T, R>(arrOrFn: T[] | ((v: T) => R), fn?: (v: T) => R) {
+  if (typeof arrOrFn === 'function') {
+    return function (arr: T[]) {
+      return arr.map(arrOrFn)
+    }
+  }
+
+  if (typeof fn !== 'undefined') {
+    return arrOrFn.map(fn)
+  }
+
+  return arrOrFn
+}
