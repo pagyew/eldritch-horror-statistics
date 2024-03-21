@@ -6,7 +6,7 @@ const emits = defineEmits<{ change: [investigators: IGameInvestigator[]] }>()
 
 const investigatorCards = computed(() => mergeBy(
   INVESTIGATORS,
-  investigators.value.map(elem => extend(elem, 'selected', true)),
+  investigators.value.map(extend('selected', true)),
   'name'
 ))
 

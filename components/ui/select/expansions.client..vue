@@ -4,18 +4,17 @@ const props = withDefaults(defineProps<{
 }>(), {
   selected: () => []
 })
+
 const emits = defineEmits<{
   select: [expansions: ExpansionName[]]
 }>()
 
-const expansions = EXPANSIONS
-  .sort((a, b) => a.releaseYear - b.releaseYear)
-  .map(({ name, ancinets, logoUrl }) => ({
-    value: name,
-    label: name,
-    description: join(ancinets),
-    imageUrl: logoUrl
-  }))
+const expansions = pipe(
+  EXPANSIONS,
+  sortBy({ key: 'releaseYear' }),
+  map(pick('name:value', 'name:label', 'ancinets:description', 'logoUrl:imageUrl')),
+  map(apply('description', join))
+)
 
 function change(items: ExpansionName[]) {
   emits('select', items)

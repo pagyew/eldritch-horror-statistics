@@ -109,6 +109,98 @@ export function mergeBy<T extends Record<PropertyKey, any>, P extends Record<Pro
   return result
 }
 
-export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(obj: T, key: K, value: V): T & Record<K, V> {
-  return { ...obj, [key]: value }
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(key: K, value: V) {
+  return function (obj: T): T & Record<K, V> {
+    return { ...obj, [key]: value }
+  }
+}
+
+type SortOptions<T> = { key?: keyof T, order?: 'asc' | 'desc' }
+
+export function sortBy<T>(arr: T[], options?: SortOptions<T>): T[]
+export function sortBy<T>(options: SortOptions<T>): (arr: T[]) => T[]
+export function sortBy<T>(arrOrOpts: T[] | SortOptions<T>, options?: SortOptions<T>) {
+  function exec(realArr: T[], realOptions?: SortOptions<T>) {
+    const { key, order = 'asc' } = realOptions ?? {}
+    return realArr.toSorted((a, b) => {
+      let aValue
+      let bValue
+
+      if (typeof key !== 'undefined' && ((typeof a === 'object' && a !== null) || Array.isArray(a))) {
+        aValue = a[key]
+        bValue = b[key]
+      } else {
+        aValue = a
+        bValue = b
+      }
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return order === 'desc' ? bValue - aValue : aValue - bValue
+      }
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return order === 'desc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue)
+      }
+
+      return 0
+    })
+  }
+
+  if (Array.isArray(arrOrOpts)) {
+    return exec(arrOrOpts, options)
+  }
+
+  return function (arr: T[]) {
+    return exec(arr, arrOrOpts)
+  }
+}
+
+type StringKey = string & PropertyKey
+type StringKeyOf<T> = string & keyof T
+type UnionToIntersection<U> = (U extends unknown ? (u: U) => void : never) extends ((i: infer I) => void) ? I & U : never
+
+export function pick<T extends Record<string, any>, K extends StringKeyOf<T> | `${StringKeyOf<T>}:${StringKey}`>(...keys: K[]) {
+  return function (obj: T) {
+    return keys.reduce((acc, options) => {
+      const [key, alias] = options.split(':') as [keyof T, string]
+      return Object.assign(acc, { [alias ?? key]: obj[key] })
+    }, {} as UnionToIntersection<K extends `${infer F}:${infer S}` ? { [k in S]: T[F] } : K extends `${infer F}` ? { [k in F]: T[F] } : {}>)
+  }
+}
+
+export function apply<T extends Record<PropertyKey, any>, K extends keyof T, F extends (v: T[K]) => any>(key: K, fn: F) {
+  return function (obj: T) {
+    obj[key] = fn(obj[key])
+    return obj as { [k in keyof T]: k extends K ? ReturnType<F> : T[k] }
+  }
+}
+
+export function map<T, R>(arr: T[], fn: (v: T) => R): R[]
+export function map<T, R>(fn: (v: T) => R): (arr: T[]) => R[]
+export function map<T, R>(arrOrFn: T[] | ((v: T) => R), fn?: (v: T) => R) {
+  function exec(realArr: T[], realFn: (v: T) => R) {
+    return realArr.map(realFn)
+  }
+
+  if (typeof arrOrFn === 'function') {
+    return function (arr: T[]) {
+      return exec(arr, arrOrFn)
+    }
+  }
+
+  if (typeof fn !== 'undefined') {
+    return exec(arrOrFn, fn)
+  }
+
+  return arrOrFn
+}
+
+export function pipe<T>(input: T): T
+export function pipe<T, R1>(input: T, a: (i: T) => R1): R1
+export function pipe<T, R1, R2>(input: T, a: (i: T) => R1, b: (i: R1) => R2): R2
+export function pipe<T, R1, R2, R3>(input: T, a: (i: T) => R1, b: (i: R1) => R2, c: (i: R2) => R3): R3
+export function pipe<T, R1, R2, R3, R4>(input: T, a: (i: T) => R1, b: (i: R1) => R2, c: (i: R2) => R3, d: (i: R3) => R4): R4
+export function pipe<T, R1, R2, R3, R4, R5>(input: T, a: (i: T) => R1, b: (i: R1) => R2, c: (i: R2) => R3, d: (i: R3) => R4, e: (i: R4) => R5): R5
+export function pipe<T>(input: T, ...fns: Function[]) {
+  return fns.reduce((acc, fn) => fn(acc), input)
 }
