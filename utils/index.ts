@@ -115,30 +115,44 @@ export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey
   }
 }
 
-export function sortBy<T>(arr: T[], options?: { key?: keyof T, order?: 'asc' | 'desc' }) {
-  const { key, order = 'asc' } = options ?? {}
-  return arr.toSorted((a, b) => {
-    let aValue
-    let bValue
+type SortOptions<T> = { key?: keyof T, order?: 'asc' | 'desc' }
 
-    if (typeof key !== 'undefined' && ((typeof a === 'object' && a !== null) || Array.isArray(a))) {
-      aValue = a[key]
-      bValue = b[key]
-    } else {
-      aValue = a
-      bValue = b
-    }
+export function sortBy<T>(arr: T[], options?: SortOptions<T>): T[]
+export function sortBy<T>(options: SortOptions<T>): (arr: T[]) => T[]
+export function sortBy<T>(arrOrOpts: T[] | SortOptions<T>, options?: SortOptions<T>) {
+  function exec(realArr: T[], realOptions?: SortOptions<T>) {
+    const { key, order = 'asc' } = realOptions ?? {}
+    return realArr.toSorted((a, b) => {
+      let aValue
+      let bValue
 
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return order === 'desc' ? bValue - aValue : aValue - bValue
-    }
+      if (typeof key !== 'undefined' && ((typeof a === 'object' && a !== null) || Array.isArray(a))) {
+        aValue = a[key]
+        bValue = b[key]
+      } else {
+        aValue = a
+        bValue = b
+      }
 
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-      return order === 'desc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue)
-    }
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return order === 'desc' ? bValue - aValue : aValue - bValue
+      }
 
-    return 0
-  })
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return order === 'desc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue)
+      }
+
+      return 0
+    })
+  }
+
+  if (Array.isArray(arrOrOpts)) {
+    return exec(arrOrOpts, options)
+  }
+
+  return function (arr: T[]) {
+    return exec(arr, arrOrOpts)
+  }
 }
 
 type StringKey = string & PropertyKey
@@ -179,4 +193,14 @@ export function map<T, R>(arrOrFn: T[] | ((v: T) => R), fn?: (v: T) => R) {
   }
 
   return arrOrFn
+}
+
+export function pipe<T>(input: T): T
+export function pipe<T, R1>(input: T, a: (i: T) => R1): R1
+export function pipe<T, R1, R2>(input: T, a: (i: T) => R1, b: (i: R1) => R2): R2
+export function pipe<T, R1, R2, R3>(input: T, a: (i: T) => R1, b: (i: R1) => R2, c: (i: R2) => R3): R3
+export function pipe<T, R1, R2, R3, R4>(input: T, a: (i: T) => R1, b: (i: R1) => R2, c: (i: R2) => R3, d: (i: R3) => R4): R4
+export function pipe<T, R1, R2, R3, R4, R5>(input: T, a: (i: T) => R1, b: (i: R1) => R2, c: (i: R2) => R3, d: (i: R3) => R4, e: (i: R4) => R5): R5
+export function pipe<T>(input: T, ...fns: Function[]) {
+  return fns.reduce((acc, fn) => fn(acc), input)
 }
