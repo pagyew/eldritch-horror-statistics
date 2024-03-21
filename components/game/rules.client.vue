@@ -29,22 +29,20 @@ function cancel() {
 
 <template>
 <div :class="css.container">
-  <ClientOnly>
-    <Vueform :class="css.form" :endpoint="false" @submit="submit">
-      <StaticElement name="head" tag="h2" content="Edit rules" />
-      <!-- Prelude -->
-      <SelectElement name="prelude" label="Prelude" :default="preludeName" :items="preludeNames" />
-      <!-- Starting Rumor -->
-      <ToggleElement name="startingRumor" label="Starting rumor" :default="hasStartingRumor" />
-      <!-- Mythos -->
-      <CheckboxgroupElement name="mythos" label="Mythos" :default="mythos" :items="allMythos" view="blocks" />
-      <!-- Submit buttons -->
-      <GroupElement :class="css.buttons" name="buttons">
-        <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
-        <ButtonElement name="submit" button-label="Save" align="right" submits :columns="6" />
-      </GroupElement>
-    </Vueform>
-  </ClientOnly>
+  <Vueform :class="css.form" :endpoint="false" @submit="submit">
+    <StaticElement name="head" tag="h2" content="Edit rules" />
+    <!-- Prelude -->
+    <SelectElement name="prelude" label="Prelude" :default="preludeName" :items="preludeNames" />
+    <!-- Starting Rumor -->
+    <ToggleElement name="startingRumor" label="Starting rumor" :default="hasStartingRumor" />
+    <!-- Mythos -->
+    <CheckboxgroupElement name="mythos" label="Mythos" :default="mythos" :items="allMythos" view="blocks" />
+    <!-- Submit buttons -->
+    <GroupElement :class="css.buttons" name="buttons">
+      <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
+      <ButtonElement name="submit" button-label="Save" align="right" submits :columns="6" />
+    </GroupElement>
+  </Vueform>
 </div>
 </template>
 

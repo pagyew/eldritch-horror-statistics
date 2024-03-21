@@ -54,18 +54,16 @@ const cardStyles = computed(() => ({
     <div :class="css.name">{{ name }}</div>
     <div :class="css.specialization">{{ specialization }}</div>
   </div>
-  <ClientOnly v-else>
-    <Clickout :class="[css.face, css.back]" @trigger="clickout">
-      <Vueform :class="css.form" :endpoint="false" @submit="select">
-        <RadiogroupElement name="team" label="Team" :default="team" :items="teams" />
-        <ToggleElement name="isOut" text="Out of Game" :default="isOut" />
-        <GroupElement class="buttons" name="buttons">
-          <ButtonElement name="remove" button-label="Delete" secondary full @click="remove" />
-          <ButtonElement name="submit" button-label="Save" submits full />
-        </GroupElement>
-      </Vueform>
-    </Clickout>
-  </ClientOnly>
+  <Clickout v-else :class="[css.face, css.back]" @trigger="clickout">
+    <Vueform :class="css.form" :endpoint="false" @submit="select">
+      <RadiogroupElement name="team" label="Team" :default="team" :items="teams" />
+      <ToggleElement name="isOut" text="Out of Game" :default="isOut" />
+      <GroupElement class="buttons" name="buttons">
+        <ButtonElement name="remove" button-label="Delete" secondary full @click="remove" />
+        <ButtonElement name="submit" button-label="Save" submits full />
+      </GroupElement>
+    </Vueform>
+  </Clickout>
 </div>
 </template>
 
