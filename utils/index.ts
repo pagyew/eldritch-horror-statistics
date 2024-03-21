@@ -143,13 +143,14 @@ export function sortBy<T>(arr: T[], options?: { key?: keyof T, order?: 'asc' | '
 
 type StringKey = string & PropertyKey
 type StringKeyOf<T> = string & keyof T
+type UnionToIntersection<U> = (U extends unknown ? (u: U) => void : never) extends ((i: infer I) => void) ? I & U : never
 
 export function pick<T extends Record<string, any>, K extends StringKeyOf<T> | `${StringKeyOf<T>}:${StringKey}`>(...keys: K[]) {
   return function (obj: T) {
     return keys.reduce((acc, options) => {
       const [key, alias] = options.split(':') as [keyof T, string]
       return Object.assign(acc, { [alias ?? key]: obj[key] })
-    }, {} as { [k in K extends `${any}:${infer S}` ? S : K]: T[K extends `${infer F}:${any}` ? F : K] })
+    }, {} as UnionToIntersection<K extends `${infer F}:${infer S}` ? { [k in S]: T[F] } : K extends `${infer F}` ? { [k in F]: T[F] } : {}>)
   }
 }
 
@@ -163,14 +164,18 @@ export function apply<T extends Record<PropertyKey, any>, K extends keyof T, F e
 export function map<T, R>(arr: T[], fn: (v: T) => R): R[]
 export function map<T, R>(fn: (v: T) => R): (arr: T[]) => R[]
 export function map<T, R>(arrOrFn: T[] | ((v: T) => R), fn?: (v: T) => R) {
+  function exec(realArr: T[], realFn: (v: T) => R) {
+    return realArr.map(realFn)
+  }
+
   if (typeof arrOrFn === 'function') {
     return function (arr: T[]) {
-      return arr.map(arrOrFn)
+      return exec(arr, arrOrFn)
     }
   }
 
   if (typeof fn !== 'undefined') {
-    return arrOrFn.map(fn)
+    return exec(arrOrFn, fn)
   }
 
   return arrOrFn
