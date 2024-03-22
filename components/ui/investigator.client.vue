@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 const css = useCssModule('css')
 const visible = ref(true)
-const teams: InvestigatorTeam[] = ['initial', 'replacement']
 
 const props = withDefaults(defineProps<{
   name: InvestigatorName
@@ -56,7 +55,7 @@ const cardStyles = computed(() => ({
   </div>
   <Clickout v-else :class="[css.face, css.back]" @trigger="clickout">
     <Vueform :class="css.form" :endpoint="false" @submit="select">
-      <RadiogroupElement name="team" label="Team" :default="team" :items="teams" />
+      <RadiogroupElement name="team" label="Team" :default="team" :items="INVESTIGATOR_TEAMS" />
       <ToggleElement name="isOut" text="Out of Game" :default="isOut" />
       <GroupElement class="buttons" name="buttons">
         <ButtonElement name="remove" button-label="Delete" secondary full @click="remove" />

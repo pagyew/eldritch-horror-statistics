@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-const languages = Object.values(LANGUAGE)
-
 const props = withDefaults(defineProps<{
   selected: LanguageName
 }>(), {
@@ -19,7 +17,7 @@ function change(language: LanguageName) {
 <template>
 <Vueform v-bind="$attrs">
   <StaticElement name="title" tag="h4" content="Language" align="center" />
-  <SelectElement name="language" :default="props.selected" :items="languages" @change="change" />
+  <SelectElement name="language" :default="props.selected" :items="LANGUAGE_NAMES" @change="change" />
 </Vueform>
 </template>
 

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const ancientNames = Object.values(ANCIENT)
-
 const props = defineProps<{
   date: string
   ancientName: AncientName
@@ -29,7 +27,7 @@ function cancel() {
     <!-- Date -->
     <DateElement name="date" label="Date" :default="date" display-format="MMMM DD, YYYY" />
     <!-- AncientName -->
-    <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ancientNames" />
+    <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ANCIENT_NAMES" />
     <!-- PlayerCount -->
     <SelectElement name="playerCount" label="Number of players" :default="playerCount" :items="arr(8)" />
     <!-- Submit buttons -->

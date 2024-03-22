@@ -1,7 +1,4 @@
 <script setup lang="ts">
-const preludeNames = Object.values(PRELUDE)
-const allMythos: IGameMythos[] = ['easy', 'normal', 'hard']
-
 const props = withDefaults(defineProps<{
   preludeName?: PreludeName
   hasStartingRumor?: boolean
@@ -9,7 +6,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   preludeName: 'None',
   hasStartingRumor: false,
-  mythos: () => [...allMythos]
+  mythos: () => [...MYTH_TYPES]
 })
 const { preludeName, hasStartingRumor, mythos } = toRefs(props)
 
@@ -32,11 +29,11 @@ function cancel() {
   <Vueform :class="css.form" :endpoint="false" @submit="submit">
     <StaticElement name="head" tag="h2" content="Edit rules" />
     <!-- Prelude -->
-    <SelectElement name="prelude" label="Prelude" :default="preludeName" :items="preludeNames" />
+    <SelectElement name="prelude" label="Prelude" :default="preludeName" :items="PRELUDE_NAMES" />
     <!-- Starting Rumor -->
     <ToggleElement name="startingRumor" label="Starting rumor" :default="hasStartingRumor" />
     <!-- Mythos -->
-    <CheckboxgroupElement name="mythos" label="Mythos" :default="mythos" :items="allMythos" view="blocks" />
+    <CheckboxgroupElement name="mythos" label="Mythos" :default="mythos" :items="MYTH_TYPES" view="blocks" />
     <!-- Submit buttons -->
     <GroupElement :class="css.buttons" name="buttons">
       <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />

@@ -207,3 +207,10 @@ export const EXPANSIONS: IExpansion[] = [
     ]
   }
 ]
+
+export const EXPANSION_CARDS = pipe(
+  EXPANSIONS,
+  sortBy({ key: 'releaseYear' }),
+  map(pick('name:value', 'name:label', 'ancinets:description', 'logoUrl:imageUrl')),
+  map(apply('description', join))
+)
