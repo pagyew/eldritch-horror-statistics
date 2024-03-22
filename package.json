@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "analyze": "nuxt analyze",
     "build": "nuxt build",
+    "cleanup": "nuxt cleanup",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
