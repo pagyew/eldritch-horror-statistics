@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-const themes = Object.values(THEME)
-
 const props = withDefaults(defineProps<{
   selected: ThemeName
 }>(), {
@@ -19,7 +17,7 @@ function change(theme: ThemeName) {
 <template>
 <Vueform v-bind="$attrs">
   <StaticElement name="title" tag="h4" content="Theme" align="center" />
-  <SelectElement name="theme" :default="props.selected" :items="themes" @change="change" />
+  <SelectElement name="theme" :default="props.selected" :items="THEME_NAMES" @change="change" />
 </Vueform>
 </template>
 

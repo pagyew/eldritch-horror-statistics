@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const ancientNames = Object.values(ANCIENT)
 const id = crypto.randomUUID()
 
 const emits = defineEmits<{
@@ -26,7 +25,7 @@ function cancel() {
       <!-- Date -->
       <DateElement name="date" label="Date" :default="new Date()" display-format="MMMM DD, YYYY" />
       <!-- AncientName -->
-      <SelectElement name="ancientName" label="Ancient One" :default="ANCIENT.AZATHOTH" :items="ancientNames" />
+      <SelectElement name="ancientName" label="Ancient One" :default="ANCIENT.AZATHOTH" :items="ANCIENT_NAMES" />
       <!-- PlayerCount -->
       <SelectElement name="playerCount" label="Number of players" :default="4" :items="arr(8)" />
     </ObjectElement>

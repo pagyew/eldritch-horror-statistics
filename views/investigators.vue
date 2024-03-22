@@ -1,8 +1,12 @@
 <script setup lang="ts">
-const props = defineProps<{ investigators: IGameInvestigator[] }>()
+const props = defineProps<{
+  investigators: IGameInvestigator[]
+}>()
 const { investigators } = toRefs(props)
 
-const emits = defineEmits<{ change: [investigators: IGameInvestigator[]] }>()
+const emits = defineEmits<{
+  change: [investigators: IGameInvestigator[]]
+}>()
 
 const investigatorCards = computed(() => mergeBy(
   INVESTIGATORS,

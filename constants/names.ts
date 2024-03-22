@@ -149,3 +149,10 @@ export const REASON = {
   RUMOR_CARD: "Indication on the Rumor card",
   PRELUDE_CARD: "Indication on the Prelude card"
 } as const
+
+export const ANCIENT_NAMES = Object.values(ANCIENT)
+export const INVESTIGATOR_NAMES = Object.values(INVESTIGATOR)
+export const INVESTIGATOR_TEAMS: InvestigatorTeam[] = ['initial', 'replacement']
+export const MYTH_TYPES: IGameMythos[] = ['easy', 'normal', 'hard']
+export const PRELUDE_NAMES = Object.values(PRELUDE)
+export const REASON_NAMES = Object.values(REASON)

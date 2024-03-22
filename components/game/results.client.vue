@@ -2,7 +2,6 @@
 import type { RadiogroupElement } from '@vueform/vueform'
 
 let mysteryEl$: Nullable<RadiogroupElement> = null
-const reasonNames = Object.values(REASON)
 
 const props = withDefaults(defineProps<{
   isWin: boolean
@@ -66,7 +65,7 @@ function onWinChange(newValue: boolean) {
     <!-- Comments -->
     <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." :default="comment" />
     <!-- Reason for defeat -->
-    <RadiogroupElement name="reason" label="Reason for defeat" :default="reason" :items="reasonNames"
+    <RadiogroupElement name="reason" label="Reason for defeat" :default="reason" :items="REASON_NAMES"
       :conditions="[['isWin', false]]" view="blocks" />
     <!-- Scoring -->
     <ObjectElement name="scores" :conditions="[['isWin', true]]">

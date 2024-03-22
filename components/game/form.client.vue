@@ -2,12 +2,8 @@
 import type { RadiogroupElement } from '@vueform/vueform'
 
 let mystery$: Nullable<RadiogroupElement> = null
-const ancientNames = Object.values(ANCIENT)
 const investigatorCards = INVESTIGATORS
   .map(pick('name:value', 'name:label', 'specialization:description'))
-const preludeNames = [{ value: null, label: 'None' }, ...Object.values(PRELUDE)]
-const reasonNames = Object.values(REASON)
-const mythos = ['easy', 'normal', 'hard']
 
 const emits = defineEmits(['submit', 'cancel'])
 const props = withDefaults(defineProps<{
@@ -25,11 +21,7 @@ const props = withDefaults(defineProps<{
   rules: () => ({
     preludeName: 'None',
     hasStartingRumor: false,
-    mythos: [
-      'easy',
-      'normal',
-      'hard'
-    ],
+    mythos: [...MYTH_TYPES],
   }),
   results: () => ({
     isWin: false,
@@ -93,7 +85,7 @@ function onWinChange(newValue: boolean) {
         <!-- Date -->
         <DateElement name="date" label="Date" rules="required" :default="general.date" display-format="MMMM DD, YYYY" />
         <!-- Ancient -->
-        <SelectElement name="ancientName" label="Ancient One" :default="general.ancientName" :items="ancientNames" />
+        <SelectElement name="ancientName" label="Ancient One" :default="general.ancientName" :items="ANCIENT_NAMES" />
         <!-- Players -->
         <SelectElement name="playerCount" label="Number of players" :default="general.playerCount"
           :items="[1, 2, 3, 4, 5, 6, 7, 8]" />
@@ -104,11 +96,11 @@ function onWinChange(newValue: boolean) {
       <ObjectElement name="rules">
         <StaticElement name="additional" content="Additional Rules" tag="h3" />
         <!-- Prelude -->
-        <SelectElement name="preludeName" label="Prelude" :default="rules.preludeName" :items="preludeNames" />
+        <SelectElement name="preludeName" label="Prelude" :default="rules.preludeName" :items="PRELUDE_NAMES" />
         <!-- Starting Rumor -->
         <ToggleElement name="hasStartingRumor" label="Starting rumor" :default="rules.hasStartingRumor" />
         <!-- Mythos -->
-        <CheckboxgroupElement name="mythos" label="Mythos" :default="rules.mythos" :items="mythos" view="blocks" />
+        <CheckboxgroupElement name="mythos" label="Mythos" :default="rules.mythos" :items="MYTH_TYPES" view="blocks" />
       </ObjectElement>
     </GroupElement>
     <GroupElement :class="css.group" name="investigators" :columns="6">
@@ -142,7 +134,7 @@ function onWinChange(newValue: boolean) {
         <!-- Comments -->
         <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." :default="results.comment" />
         <!-- Reason for defeat -->
-        <RadiogroupElement name="reason" label="Reason for defeat" :default="results.reason" :items="reasonNames"
+        <RadiogroupElement name="reason" label="Reason for defeat" :default="results.reason" :items="REASON_NAMES"
           :conditions="[['results.isWin', false]]" view="blocks" />
         <!-- Scoring -->
         <ObjectElement name="scores" :conditions="[['results.isWin', true]]">
