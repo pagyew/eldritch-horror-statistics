@@ -1,5 +1,6 @@
 <script setup lang="ts">
-
+const SettingsStore = useSettingsStore()
+const { settings } = storeToRefs(SettingsStore)
 </script>
 
 <template>
@@ -21,6 +22,7 @@
       </li>
     </ul>
   </nav>
+  <pre>{{ settings }}</pre>
 </header>
 </template>
 
