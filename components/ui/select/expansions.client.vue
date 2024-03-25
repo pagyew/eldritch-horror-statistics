@@ -9,17 +9,23 @@ const emits = defineEmits<{
   select: [expansions: ExpansionName[]]
 }>()
 
-function change(items: ExpansionName[]) {
-  emits('select', items)
+function change(expansions: ExpansionName[]) {
+  console.log('change', expansions.toString())
+  emits('select', expansions)
 }
 </script>
 
 <template>
-<Vueform v-bind="$attrs">
+<Vueform :class="css.form" v-bind="$attrs">
   <StaticElement name="title" tag="h4" content="Select expansions" align="center" />
-  <CheckboxgroupElement name="expansions" :default="[EXPANSION.CORE, ...props.selected]" :disables="[EXPANSION.CORE]"
+  <CheckboxgroupElement name="expansions" :default="props.selected" :disables="[EXPANSION.CORE]"
     :items="EXPANSION_CARDS" @change="change" view="blocks" />
 </Vueform>
 </template>
 
-<style module></style>
+<style module="css">
+.form {
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+</style>
