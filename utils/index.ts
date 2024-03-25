@@ -109,9 +109,21 @@ export function mergeBy<T extends Record<PropertyKey, any>, P extends Record<Pro
   return result
 }
 
-export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(key: K, value: V) {
-  return function (obj: T): T & Record<K, V> {
-    return { ...obj, [key]: value }
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(obj: T, key: K, value: V): T & Record<K, V>
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(key: K, value: V): (obj: T) => T & Record<K, V>
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, V>(objOrKey: T | K, keyOrValue: K | V, value?: V) {
+  function exec(realObj: T, realKey: K, realValue: V): T & Record<K, V> {
+    return { ...realObj, [realKey]: realValue }
+  }
+
+  if (
+    typeof objOrKey === 'object' && objOrKey !== null &&
+    ['string', 'number', 'symbol'].includes(typeof keyOrValue) &&
+    typeof value !== 'undefined'
+  ) return exec(objOrKey, keyOrValue as K, value)
+
+  return function (obj: T) {
+    return exec(obj, objOrKey, keyOrValue as V)
   }
 }
 
