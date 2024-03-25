@@ -1,17 +1,26 @@
 <script lang="ts" setup>
 const GamesStore = useGamesStore()
+const SettingsStore = useSettingsStore()
+const { settings } = storeToRefs(SettingsStore)
+
 const { isLoading, start, finish } = useLoadingIndicator()
 
-async function create(game: IGameNew) {
+let expansions = ref(settings.value.expansions)
+
+function onSelectExpansions(newExpansions: ExpansionName[]) {
+  expansions.value = newExpansions
+}
+
+async function onSubmit(newGame: IGameNew) {
   start()
 
-  await GamesStore.create(game)
-  navigateTo(`/games/${game.id}`)
+  await GamesStore.create(extend(newGame, 'expansions', settings.value.expansions))
+  navigateTo(`/games/${newGame.id}`)
 
   finish()
 }
 
-function cancel() {
+function onCancel() {
   navigateTo('/games')
 }
 </script>
@@ -22,7 +31,17 @@ function cancel() {
 </Head>
 <NuxtLink to="/games">Back to My Games</NuxtLink>
 <p v-if="isLoading">Creating...</p>
-<GameNew @submit="create" @cancel="cancel" />
+<div :class="css.container">
+  <GameNew :expansions="expansions" @submit="onSubmit" @cancel="onCancel" />
+  <UiSelectExpansions :selected="expansions" @select="onSelectExpansions" />
+</div>
 </template>
 
-<style module></style>
+<style module="css">
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: stretch;
+}
+</style>
