@@ -11,12 +11,12 @@ const props = withDefaults(defineProps<{
 const { preludeName, hasStartingRumor, mythos } = toRefs(props)
 
 const emits = defineEmits<{
-  submit: [rules: IGameRules]
+  submit: [type: 'rules', rules: IGameRules]
   cancel: []
 }>()
 
 function submit(form$: Vueform) {
-  emits('submit', form$.requestData as IGameRules)
+  emits('submit', 'rules', form$.requestData as IGameRules)
 }
 
 function cancel() {
@@ -29,9 +29,9 @@ function cancel() {
   <Vueform :class="css.form" :endpoint="false" @submit="submit">
     <StaticElement name="head" tag="h2" content="Edit rules" />
     <!-- Prelude -->
-    <SelectElement name="prelude" label="Prelude" :default="preludeName" :items="PRELUDE_NAMES" />
+    <SelectElement name="preludeName" label="Prelude" :default="preludeName" :items="PRELUDE_NAMES" />
     <!-- Starting Rumor -->
-    <ToggleElement name="startingRumor" label="Starting rumor" :default="hasStartingRumor" />
+    <ToggleElement name="hasStartingRumor" label="Starting rumor" :default="hasStartingRumor" />
     <!-- Mythos -->
     <CheckboxgroupElement name="mythos" label="Mythos" :default="mythos" :items="MYTH_TYPES" view="blocks" />
     <!-- Submit buttons -->

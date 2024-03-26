@@ -7,12 +7,12 @@ const props = defineProps<{
 const { date, ancientName, playerCount } = toRefs(props)
 
 const emits = defineEmits<{
-  submit: [general: IGameGeneral]
+  submit: [type: 'general', general: IGameGeneral]
   cancel: []
 }>()
 
 function submit(form$: Vueform) {
-  emits('submit', form$.requestData as IGameGeneral)
+  emits('submit', 'general', form$.requestData as IGameGeneral)
 }
 
 function cancel() {

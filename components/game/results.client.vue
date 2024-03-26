@@ -18,12 +18,12 @@ const props = withDefaults(defineProps<{
 const { isWin, solvedMysteryCount, time, reason, comment, scores } = toRefs(props)
 
 const emits = defineEmits<{
-  submit: [results: IGameResults]
+  submit: [type: 'results', results: IGameResults]
   cancel: []
 }>()
 
 function submit(form$: Vueform) {
-  emits('submit', form$.requestData as IGameResults)
+  emits('submit', 'results', form$.requestData as IGameResults)
 }
 
 function cancel() {
