@@ -1,11 +1,14 @@
 <script setup lang="ts">
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   investigators: IGameInvestigator[]
-}>()
+}>(), {
+  investigators: () => []
+})
 const { investigators } = toRefs(props)
 
 const emits = defineEmits<{
-  change: [investigators: IGameInvestigator[]]
+  change: [type: 'investigators', investigators: IGameInvestigator[]]
+  close: []
 }>()
 
 const investigatorCards = computed(() => mergeBy(
@@ -21,11 +24,11 @@ function change(investigator: IGameInvestigator) {
     'name'
   )
 
-  emits('change', newInvestigators)
+  emits('change', 'investigators', newInvestigators)
 }
 
 function remove(name: InvestigatorName) {
-  emits('change', investigators.value.filter(investigator => investigator.name !== name))
+  emits('change', 'investigators', investigators.value.filter(investigator => investigator.name !== name))
 }
 </script>
 
@@ -33,6 +36,7 @@ function remove(name: InvestigatorName) {
 <div :class="css.container">
   <div :class="css.form">
     <h2>Select investigators</h2>
+    <button @click="emits('close')">Close</button>
     <div :class="css.cards">
       <UiInvestigator v-for="investigator of investigatorCards" :key="investigator.name" v-bind="investigator"
         @select="change" @remove="remove" />
