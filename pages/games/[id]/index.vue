@@ -1,7 +1,26 @@
 <script setup lang="ts">
 const GamesStore = useGamesStore()
 const gameId = useRoute().params.id as string
-const { data: game, pending, error } = useAsyncData(() => GamesStore.getById(gameId), { server: false })
+const { game } = storeToRefs(GamesStore)
+const { pending, error } = useAsyncData(() => GamesStore.getById(gameId), { server: false })
+
+const visibleBlock = ref<IGameBlock | null>(null)
+
+function onEditClick(blockName: IGameBlock) {
+  closeAll()
+  visibleBlock.value = blockName
+}
+
+function updateGame(type: IGameBlock, options: IGameGeneral | IGameRules | IGameInvestigator[] | IGameResults) {
+  if (game.value) {
+    GamesStore.update({ ...game.value, [type]: options })
+    closeAll()
+  }
+}
+
+function closeAll() {
+  visibleBlock.value = null
+}
 
 onUnmounted(() => GamesStore.$reset())
 </script>
@@ -25,74 +44,28 @@ onUnmounted(() => GamesStore.$reset())
   <pre v-else-if="error">{{ error }}</pre>
   <p v-else-if="!game">Game with id {{ gameId }} not found</p>
   <section v-else :class="css.section">
-    <div :class="[css.block, css.general]">
-      <h3>General</h3>
-      <div :class="css.line">
-        <span>Ancient</span>
-        <span>{{ game.general.ancientName }}</span>
-      </div>
-      <div :class="css.line">
-        <span>Players</span>
-        <span>{{ game.general.playerCount }}</span>
-      </div>
-      <div :class="css.line">
-        <span>Date</span>
-        <span>{{ game.general.date }}</span>
-      </div>
-    </div>
-    <div :class="[css.block, css.rules]">
-      <h3>Rules</h3>
-      <div :class="css.line">
-        <span>Mythos</span>
-        <span>{{ join(game.rules?.mythos) }}</span>
-      </div>
-      <div :class="css.line">
-        <span>Rumor</span>
-        <span>{{ game.rules?.hasStartingRumor }}</span>
-      </div>
-    </div>
-    <div :class="[css.block, css.investigators]">
-      <h3>Investigators</h3>
-      <ul>
-        <li v-for="investigator in game.investigators" :key="investigator.name">
-          {{ investigator.name }}
-        </li>
-      </ul>
-    </div>
-    <div :class="[css.block, css.results]">
-      <h3>Results</h3>
-      <p>{{ game.results.isWin }}</p>
-      <p>{{ formatTime(game.results?.time ?? 0) }}</p>
-      <p>Solved mysteries: {{ game.results?.solvedMysteryCount }}</p>
-      <div v-if="isWinner(game)">
-        <div :class="css.line" v-for="(score, name) in game.results.scores" :key="name">
-          <span>{{ SCORE[upper(name)] }}</span>
-          <span>{{ score }}</span>
-        </div>
-      </div>
-      <div v-else>{{ game.results?.reason }}</div>
-      <p v-if="game.results?.comment">{{ game.results?.comment }}</p>
-    </div>
+    <!-- General -->
+    <GameGeneral v-if="visibleBlock === 'general'" v-bind="game.general" @submit="updateGame" @cancel="closeAll" />
+    <ViewGameGeneral v-else v-bind="game.general" @edit-click="onEditClick" />
+    <!-- Rules -->
+    <GameRules v-if="visibleBlock === 'rules'" v-bind="game.rules" @submit="updateGame" @cancel="closeAll" />
+    <ViewGameRules v-else v-bind="game.rules" @edit-click="onEditClick" />
+    <!-- Investigators -->
+    <GameInvestigators v-if="visibleBlock === 'investigators'" v-bind="game" @change="updateGame" @close="closeAll" />
+    <ViewGameInvestigators v-else :investigators="game.investigators" @edit-click="onEditClick" />
+    <!-- Results -->
+    <GameResults v-if="visibleBlock === 'results'" v-bind="game.results" @submit="updateGame" @cancel="closeAll" />
+    <ViewGameResults v-else v-bind="game.results" @edit-click="onEditClick" />
   </section>
 </main>
 </template>
 
 <style module="css">
 .section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px;
-}
-
-.block {
+  padding: 20px;
   border: 1px solid #ccc;
-  padding: 10px;
-}
-
-.line {
-  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  row-gap: 20px;
 }
 </style>
