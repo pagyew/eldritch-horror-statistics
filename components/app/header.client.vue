@@ -5,7 +5,6 @@ const { settings } = storeToRefs(SettingsStore)
 
 <template>
 <header :class="css.header">
-  It's header
   <nav>
     <ul>
       <li>
@@ -30,5 +29,7 @@ const { settings } = storeToRefs(SettingsStore)
 .header {
   border: 1px solid black;
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 </style>
