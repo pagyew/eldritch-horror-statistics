@@ -61,6 +61,10 @@ export function upper<T extends string>(str: T) {
   return str.toUpperCase() as Uppercase<T>
 }
 
+export function f_upper<T extends string>(str: T) {
+  return str.replace(/^./, str[0].toUpperCase()) as Capitalize<T>
+}
+
 export function arr(n: number, options?: { start?: number, step?: number }) {
   const { start = 1, step = 1 } = options ?? {}
   return Array.from({ length: n }, (_, i) => start + i * step)
