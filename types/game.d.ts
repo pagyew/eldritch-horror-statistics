@@ -1,3 +1,5 @@
+declare type IGameBlock = 'general' | 'rules' | 'investigators' | 'results'
+
 declare interface IGameGeneral {
   date: string
   ancientName: AncientName
