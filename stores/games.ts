@@ -16,7 +16,6 @@ export const useGamesStore = defineStore('games', () => {
 
   async function getAll() {
     return games.value
-    // return $fetch('/api/games').then(setGames)
   }
 
   async function getById(id: string) {
@@ -27,21 +26,24 @@ export const useGamesStore = defineStore('games', () => {
     }
 
     return setCurrent(game)
-    // return $fetch<IGame>(`/api/games/${id}`).then(setGame)
   }
 
-  async function create(game: IGameNew) {
-    const newGames = [...games.value, game]
+  async function create(newGame: IGameNew) {
+    const newGames = [...games.value, newGame]
 
-    return setAll(newGames)
-    // return $fetch('/api/games/new', { method: 'POST', body }).then(setGame)
+    setAll(newGames)
+    return newGame
   }
 
-  async function update(game: IGame) {
-    const newGames = games.value.map(g => (g.id === game.id ? game : g))
+  async function update(updatedGame: IGame) {
+    updateAll(updatedGame)
+    return setCurrent(updatedGame)
+  }
+
+  async function updateAll(updatedGame: IGame) {
+    const newGames = games.value.map(game => game.id === updatedGame.id ? updatedGame : game)
 
     return setAll(newGames)
-    // return $fetch(`/api/games/${id}`, { method: 'PUT', body }).then(setGame)
   }
 
   function $reset() {
