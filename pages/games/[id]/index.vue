@@ -17,9 +17,6 @@ onUnmounted(() => GamesStore.$reset())
       <li>
         <NuxtLink to="/games">Back to My Games</NuxtLink>
       </li>
-      <li>
-        <NuxtLink :to="`/games/${gameId}/edit`">Edit this game</NuxtLink>
-      </li>
     </ul>
   </nav>
 </header>
