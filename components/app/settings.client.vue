@@ -20,9 +20,9 @@ function selectLanguage(language: LanguageName) {
 <div :class="css.container">
   <h2>Settings</h2>
   <div :class="css.wrapper">
-    <UiExpansionsSelect :class="css.expansions" :selected="expansions" @select="selectExpansions" />
-    <UiThemeSelect :class="css.theme" :selected="theme" @select="selectTheme" />
-    <UiLanguageSelect :class="css.language" :selected="language" @select="selectLanguage" />
+    <UiSelectExpansions :class="css.expansions" :selected="expansions" @select="selectExpansions" />
+    <UiSelectTheme :class="css.theme" :selected="theme" @select="selectTheme" />
+    <UiSelectLanguage :class="css.language" :selected="language" @select="selectLanguage" />
   </div>
 </div>
 </template>
