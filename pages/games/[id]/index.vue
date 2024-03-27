@@ -6,6 +6,10 @@ const { pending, error } = useAsyncData(() => GamesStore.getById(gameId), { serv
 
 const visibleBlock = ref<IGameBlock | null>(null)
 
+function onSelectExpansions(newExpansions: ExpansionName[]) {
+  updateGame('expansionNames', newExpansions)
+}
+
 function onEditClick(blockName: IGameBlock) {
   closeAll()
   visibleBlock.value = blockName
@@ -14,7 +18,7 @@ function onEditClick(blockName: IGameBlock) {
 function updateGame<T extends IGameBlock>(type: T, options: IGameBlocks[T]) {
   if (game.value) {
     GamesStore.update({ ...game.value, [type]: options })
-    if (type !== 'investigators') closeAll()
+    if (!['investigators', 'expansionNames'].includes(type)) closeAll()
   }
 }
 
@@ -44,20 +48,24 @@ onUnmounted(() => GamesStore.$reset())
   <pre v-else-if="error">{{ error }}</pre>
   <p v-else-if="!game">Game with id {{ gameId }} not found</p>
   <section v-else :class="css.section">
+    <details>
+      <summary>Expansions</summary>
+      <UiSelectExpansions :selected="game.expansionNames" @select="onSelectExpansions" />
+    </details>
     <!-- Comment -->
     <GameComment v-if="visibleBlock === 'comment'" v-bind="game" @submit="updateGame" @close="closeAll" />
     <ViewGameComment v-else v-bind="game" @edit-click="onEditClick" />
     <!-- General -->
-    <GameGeneral v-if="visibleBlock === 'general'" v-bind="game.general" @submit="updateGame" @cancel="closeAll" />
+    <GameGeneral v-if="visibleBlock === 'general'" v-bind="game" @submit="updateGame" @cancel="closeAll" />
     <ViewGameGeneral v-else v-bind="game.general" @edit-click="onEditClick" />
     <!-- Rules -->
-    <GameRules v-if="visibleBlock === 'rules'" v-bind="game.rules" @submit="updateGame" @cancel="closeAll" />
+    <GameRules v-if="visibleBlock === 'rules'" v-bind="game" @submit="updateGame" @cancel="closeAll" />
     <ViewGameRules v-else v-bind="game.rules" @edit-click="onEditClick" />
     <!-- Investigators -->
     <GameInvestigators v-if="visibleBlock === 'investigators'" v-bind="game" @change="updateGame" @close="closeAll" />
     <ViewGameInvestigators v-else :investigators="game.investigators" @edit-click="onEditClick" />
     <!-- Results -->
-    <GameResults v-if="visibleBlock === 'results'" v-bind="game.results" @submit="updateGame" @cancel="closeAll" />
+    <GameResults v-if="visibleBlock === 'results'" v-bind="game" @submit="updateGame" @cancel="closeAll" />
     <ViewGameResults v-else v-bind="game.results" @edit-click="onEditClick" />
   </section>
 </main>
