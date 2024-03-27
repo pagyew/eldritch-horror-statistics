@@ -14,7 +14,7 @@ function onEditClick(blockName: IGameBlock) {
 function updateGame<T extends IGameBlock>(type: T, options: IGameBlocks[T]) {
   if (game.value) {
     GamesStore.update({ ...game.value, [type]: options })
-    closeAll()
+    if (type !== 'investigators') closeAll()
   }
 }
 
