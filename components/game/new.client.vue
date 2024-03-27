@@ -45,6 +45,8 @@ function onCancel() {
       <!-- IsWin -->
       <ToggleElement name="isWin" label="Defeat" :default="false" :labels="{ on: 'Win', off: 'Loss' }" />
     </ObjectElement>
+    <!-- Comments -->
+    <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." />
     <!-- Submit buttons -->
     <GroupElement :class="css.buttons" name="buttons">
       <ButtonElement name="cancel" button-label="Cancel" secondary @click="onCancel" :columns="6" />

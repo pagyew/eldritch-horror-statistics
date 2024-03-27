@@ -1,4 +1,13 @@
-declare type IGameBlock = 'general' | 'rules' | 'investigators' | 'results'
+declare type IGameMythos = 'easy' | 'normal' | 'hard'
+declare type IGameBlock = keyof IGameBlocks
+
+declare interface IGameBlocks {
+  general: IGameGeneral
+  rules: IGameRules
+  investigators: IGameInvestigator[]
+  results: IGameResults
+  comment: string
+}
 
 declare interface IGameGeneral {
   date: string
@@ -10,7 +19,6 @@ declare interface IGameResults {
   isWin: boolean
   solvedMysteryCount?: number
   time?: number
-  comment?: string
   scores?: IScores
   reason?: ReasonName
 }
@@ -19,9 +27,8 @@ declare interface IGameNew {
   id: string
   general: IGameGeneral
   results: IGameResults
+  comment?: string
 }
-
-declare type IGameMythos = 'easy' | 'normal' | 'hard'
 
 declare interface IGameRules {
   preludeName: PreludeName
@@ -38,7 +45,6 @@ declare interface IGameInvestigator {
 declare interface IGameResultsFilled extends IGameResults {
   solvedMysteryCount: number
   time: number
-  comment: string
 }
 
 declare interface IGameResultsWin extends IGameResults {

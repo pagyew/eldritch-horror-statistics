@@ -11,7 +11,7 @@ function onEditClick(blockName: IGameBlock) {
   visibleBlock.value = blockName
 }
 
-function updateGame(type: IGameBlock, options: IGameGeneral | IGameRules | IGameInvestigator[] | IGameResults) {
+function updateGame<T extends IGameBlock>(type: T, options: IGameBlocks[T]) {
   if (game.value) {
     GamesStore.update({ ...game.value, [type]: options })
     closeAll()
@@ -44,6 +44,9 @@ onUnmounted(() => GamesStore.$reset())
   <pre v-else-if="error">{{ error }}</pre>
   <p v-else-if="!game">Game with id {{ gameId }} not found</p>
   <section v-else :class="css.section">
+    <!-- Comment -->
+    <GameComment v-if="visibleBlock === 'comment'" v-bind="game" @submit="updateGame" @close="closeAll" />
+    <ViewGameComment v-else v-bind="game" @edit-click="onEditClick" />
     <!-- General -->
     <GameGeneral v-if="visibleBlock === 'general'" v-bind="game.general" @submit="updateGame" @cancel="closeAll" />
     <ViewGameGeneral v-else v-bind="game.general" @edit-click="onEditClick" />
