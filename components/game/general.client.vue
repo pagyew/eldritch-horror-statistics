@@ -11,18 +11,18 @@ const emits = defineEmits<{
   cancel: []
 }>()
 
-function submit(form$: Vueform) {
+function onSubmit(form$: Vueform) {
   emits('submit', 'general', form$.requestData as IGameGeneral)
 }
 
-function cancel() {
+function onCancel() {
   emits('cancel')
 }
 </script>
 
 <template>
 <div :class="css.container">
-  <Vueform :class="css.form" :endpoint="false" @submit="submit">
+  <Vueform :class="css.form" :endpoint="false" @submit="onSubmit">
     <StaticElement name="head" tag="h2" content="Edit general info" />
     <!-- Date -->
     <DateElement name="date" label="Date" :default="date" display-format="MMMM DD, YYYY" />
@@ -32,7 +32,7 @@ function cancel() {
     <SelectElement name="playerCount" label="Number of players" :default="playerCount" :items="arr(8)" />
     <!-- Submit buttons -->
     <GroupElement :class="css.buttons" name="buttons">
-      <ButtonElement name="cancel" button-label="Cancel" secondary @click="cancel" :columns="6" />
+      <ButtonElement name="cancel" button-label="Cancel" secondary @click="onCancel" :columns="6" />
       <ButtonElement name="submit" button-label="Save" align="right" submits :columns="6" />
     </GroupElement>
   </Vueform>
