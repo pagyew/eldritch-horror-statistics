@@ -1,15 +1,18 @@
 <script setup lang="ts">
 const props = defineProps<{
-  date: string
-  ancientName: AncientName
-  playerCount: number
+  expansionNames: ExpansionName[]
+  general: IGameGeneral
 }>()
-const { date, ancientName, playerCount } = toRefs(props)
+const { expansionNames, general } = toRefs(props)
 
 const emits = defineEmits<{
   submit: [type: 'general', general: IGameGeneral]
   cancel: []
 }>()
+
+const filteredAncients = computed(() =>
+  getNames(ANCIENTS.filter(ancient => expansionNames.value.includes(ancient.expansion)))
+)
 
 function onSubmit(form$: Vueform) {
   emits('submit', 'general', form$.requestData as IGameGeneral)
@@ -25,11 +28,11 @@ function onCancel() {
   <Vueform :class="css.form" :endpoint="false" @submit="onSubmit">
     <StaticElement name="head" tag="h2" content="Edit general info" />
     <!-- Date -->
-    <DateElement name="date" label="Date" :default="date" display-format="MMMM DD, YYYY" />
+    <DateElement name="date" label="Date" :default="general.date" display-format="MMMM DD, YYYY" />
     <!-- AncientName -->
-    <SelectElement name="ancientName" label="Ancient One" :default="ancientName" :items="ANCIENT_NAMES" />
+    <SelectElement name="ancientName" label="Ancient One" :default="general.ancientName" :items="filteredAncients" />
     <!-- PlayerCount -->
-    <SelectElement name="playerCount" label="Number of players" :default="playerCount" :items="arr(8)" />
+    <SelectElement name="playerCount" label="Number of players" :default="general.playerCount" :items="arr(8)" />
     <!-- Submit buttons -->
     <GroupElement :class="css.buttons" name="buttons">
       <ButtonElement name="cancel" button-label="Cancel" secondary @click="onCancel" :columns="6" />

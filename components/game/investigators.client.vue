@@ -1,18 +1,23 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  expansionNames: ExpansionName[]
   investigators: IGameInvestigator[]
 }>(), {
   investigators: () => []
 })
-const { investigators } = toRefs(props)
+const { expansionNames, investigators } = toRefs(props)
 
 const emits = defineEmits<{
   change: [type: 'investigators', investigators: IGameInvestigator[]]
   close: []
 }>()
 
+const filteredInvestigators = computed(() =>
+  INVESTIGATORS.filter(investigator => expansionNames.value.includes(investigator.expansion))
+)
+
 const investigatorCards = computed(() => mergeBy(
-  INVESTIGATORS,
+  filteredInvestigators.value,
   investigators.value.map(extend('selected', true)),
   'name'
 ))

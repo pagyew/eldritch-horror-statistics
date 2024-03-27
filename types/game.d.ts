@@ -3,10 +3,11 @@ declare type IGameBlock = keyof IGameBlocks
 
 declare interface IGameBlocks {
   general: IGameGeneral
+  comment: string
+  expansionNames: ExpansionName[]
   rules: IGameRules
   investigators: IGameInvestigator[]
   results: IGameResults
-  comment: string
 }
 
 declare interface IGameGeneral {
@@ -67,7 +68,7 @@ declare interface IGameResultsFilledLose extends IGameResultsFilled {
 
 
 declare interface IGame extends IGameNew {
-  expansionNames?: ExpansionName[]
+  expansionNames: ExpansionName[]
   investigators?: IGameInvestigator[]
   rules?: IGameRules
 }
