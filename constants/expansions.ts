@@ -43,7 +43,9 @@ export const EXPANSIONS: IExpansion[] = [
       INVESTIGATOR.SILAS_MARSH,
       INVESTIGATOR.TRISH_SCARBOROUGH
     ],
-    preludes: []
+    preludes: [
+      PRELUDE.NONE
+    ]
   }, {
     name: EXPANSION.FORSAKEN_LORE,
     releaseYear: 2014,
