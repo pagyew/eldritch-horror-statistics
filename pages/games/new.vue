@@ -14,7 +14,7 @@ function onSelectExpansions(newExpansions: ExpansionName[]) {
 async function onSubmit(newGame: IGameNew) {
   start()
 
-  await GamesStore.create(extend(newGame, 'expansions', settings.value.expansions))
+  await GamesStore.create(extend(newGame, 'expansionNames', settings.value.expansions))
   navigateTo(`/games/${newGame.id}`)
 
   finish()
@@ -32,7 +32,7 @@ function onCancel() {
 <NuxtLink to="/games">Back to My Games</NuxtLink>
 <p v-if="isLoading">Creating...</p>
 <div :class="css.container">
-  <GameNew :expansions="expansions" @submit="onSubmit" @cancel="onCancel" />
+  <GameNew :expansion-names="expansions" @submit="onSubmit" @cancel="onCancel" />
   <UiSelectExpansions :selected="expansions" @select="onSelectExpansions" />
 </div>
 </template>

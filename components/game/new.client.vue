@@ -2,21 +2,18 @@
 const id = crypto.randomUUID()
 
 const props = defineProps<{
-  expansions: ExpansionName[]
+  expansionNames: ExpansionName[]
 }>()
-const { expansions } = toRefs(props)
+const { expansionNames } = toRefs(props)
 
 const emits = defineEmits<{
   submit: [game: IGameNew]
   cancel: []
 }>()
 
-const filteredAncients = computed(() => {
-  return EXPANSIONS
-    .filter(expansion => expansions.value.includes(expansion.name))
-    .flatMap(expansion => expansion.ancinets)
-    .sort()
-})
+const filteredAncients = computed(() =>
+  getNames(ANCIENTS.filter(ancient => expansionNames.value.includes(ancient.expansion)))
+)
 
 function onSubmit(form$: Vueform) {
   emits('submit', form$.requestData as IGameNew)
