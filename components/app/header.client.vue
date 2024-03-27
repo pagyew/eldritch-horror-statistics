@@ -19,7 +19,10 @@
       </li>
     </ul>
   </nav>
-  <AppSettings />
+  <details>
+    <summary>Settings</summary>
+    <AppSettings />
+  </details>
 </header>
 </template>
 
