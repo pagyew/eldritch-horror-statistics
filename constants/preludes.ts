@@ -1,5 +1,9 @@
 export const PRELUDES: IPrelude[] = [
   {
+    name: PRELUDE.NONE,
+    mechanic: "None",
+    expansion: EXPANSION.CORE
+  }, {
     name: PRELUDE.BEGINNING_OF_THE_END,
     mechanic: "Azathoth / Eldritch token Eldritch token on the Green Omen green space",
     expansion: EXPANSION.MOUNTAINS_OF_MADNESS
