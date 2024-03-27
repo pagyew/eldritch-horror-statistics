@@ -28,7 +28,7 @@ export const useGamesStore = defineStore('games', () => {
     return setCurrent(game)
   }
 
-  async function create(newGame: IGameNew) {
+  async function create(newGame: IGame) {
     const newGames = [...games.value, newGame]
 
     setAll(newGames)
@@ -42,6 +42,12 @@ export const useGamesStore = defineStore('games', () => {
 
   async function updateAll(updatedGame: IGame) {
     const newGames = games.value.map(game => game.id === updatedGame.id ? updatedGame : game)
+
+    return setAll(newGames)
+  }
+
+  async function deleteById(gameId: string) {
+    const newGames = games.value.filter(game => game.id !== gameId)
 
     return setAll(newGames)
   }
@@ -64,6 +70,7 @@ export const useGamesStore = defineStore('games', () => {
     getAll,
     create,
     update,
+    deleteById,
     $reset
   }
 })

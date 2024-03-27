@@ -15,6 +15,11 @@ function onEditClick(blockName: IGameBlock) {
   visibleBlock.value = blockName
 }
 
+function onDeleteClick() {
+  GamesStore.deleteById(gameId)
+  navigateTo('/games')
+}
+
 function updateGame<T extends IGameBlock>(type: T, options: IGameBlocks[T]) {
   if (game.value) {
     GamesStore.update({ ...game.value, [type]: options })
@@ -48,6 +53,7 @@ onUnmounted(() => GamesStore.$reset())
   <pre v-else-if="error">{{ error }}</pre>
   <p v-else-if="!game">Game with id {{ gameId }} not found</p>
   <section v-else :class="css.section">
+    <button @click="onDeleteClick">Delete</button>
     <details>
       <summary>Expansions</summary>
       <UiSelectExpansions :selected="game.expansionNames" @select="onSelectExpansions" />
