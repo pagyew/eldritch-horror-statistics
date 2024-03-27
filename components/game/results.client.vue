@@ -7,7 +7,6 @@ const props = withDefaults(defineProps<{
   isWin: boolean
   solvedMysteryCount?: number
   time?: number
-  comment?: string
   reason?: ReasonName
   scores?: IScores
 }>(), {
@@ -15,7 +14,7 @@ const props = withDefaults(defineProps<{
   time: toMs({ h: 4 }),
   reason: REASON.SURRENDER
 })
-const { isWin, solvedMysteryCount, time, reason, comment, scores } = toRefs(props)
+const { isWin, solvedMysteryCount, time, reason, scores } = toRefs(props)
 
 const emits = defineEmits<{
   submit: [type: 'results', results: IGameResults]
@@ -62,8 +61,6 @@ function onWinChange(newValue: boolean) {
     <!-- Time -->
     <SliderElement name="time" label="Time" :default="time" type="number" :min="0" :max="toMs({ h: 24 })"
       :step="toMs({ m: 15 })" show-tooltip="always" :format="formatTime" />
-    <!-- Comments -->
-    <TextareaElement name="comment" label="Comment" placeholder="It was terrible..." :default="comment" />
     <!-- Reason for defeat -->
     <RadiogroupElement name="reason" label="Reason for defeat" :default="reason" :items="REASON_NAMES"
       :conditions="[['isWin', false]]" view="blocks" />

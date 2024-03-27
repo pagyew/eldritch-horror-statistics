@@ -18,7 +18,6 @@ export const MOCK_GAMES: IGame[] = [{
   },
   results: {
     isWin: false,
-    comment: '',
     solvedMysteryCount: 1,
     time: 4 * 60 * 60 * 1000,
     reason: REASON.SURRENDER
@@ -43,7 +42,6 @@ export const MOCK_GAMES: IGame[] = [{
   },
   results: {
     isWin: true,
-    comment: '',
     solvedMysteryCount: 3,
     time: 3 * 60 * 60 * 1000,
     scores: {

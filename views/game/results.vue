@@ -3,7 +3,6 @@ const props = withDefaults(defineProps<{
   isWin: boolean
   solvedMysteryCount?: number
   time?: number
-  comment?: string
   scores?: IScores
   reason?: ReasonName
 }>(), {
@@ -11,7 +10,7 @@ const props = withDefaults(defineProps<{
   time: toMs({ h: 4 }),
   reason: REASON.SURRENDER
 })
-const { isWin, solvedMysteryCount, time, comment, scores, reason } = toRefs(props)
+const { isWin, solvedMysteryCount, time, scores, reason } = toRefs(props)
 
 const emits = defineEmits<{
   editClick: [type: 'results']
@@ -28,7 +27,6 @@ const emits = defineEmits<{
     <ViewGameLine v-for="(score, name) in scores" :key="name" :left="SCORE[upper(name)]" :right="score" />
   </div>
   <div v-else>{{ reason }}</div>
-  <p v-if="comment">{{ comment }}</p>
 </ViewGameBlock>
 </template>
 
